@@ -1,0 +1,8 @@
+[
+  { "title": "Book a Room", "link": "/book-room" },
+  { "title": "Family Packages", "link": "/family-packages" },
+  { "title": "Adventure Tours", "link": "/adventure-tours" },
+  { "title": "Local Experiences", "link": "/local-experiences" },
+  { "title": "Dining & Cuisine", "link": "/dining" },
+  { "title": "Wellness & Spa", "link": "/wellness-spa" }
+]
