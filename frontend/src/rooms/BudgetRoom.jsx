@@ -1,75 +1,96 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { roomsData } from '../data/roomsData';
 import BookingForm from '../components/BookingForm';
-import RoomServices from '../components/RoomServices';
+import HomestayRooms from './HomestayRooms';
 
 const BudgetRoom = () => {
-  const [activeImage, setActiveImage] = useState(0);
-  const room = roomsData.find(room => room.id === 'budget');
-
-  if (!room) {
-    return (
-      <motion.div
-        className="room-not-found"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="container">
-          <h1>Room Not Found</h1>
-          <p>The room you're looking for doesn't exist.</p>
-        </div>
-      </motion.div>
-    );
-  }
-
-  const galleryImages = [
-    room.image,
-    'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&h=400&fit=crop'
-  ];
+  // Local room data
+  const room = {
+    id: 1,
+    slug: "budget",
+    title: "Budget Room",
+    name: "Budget Room",
+    description: "Affordable and comfortable rooms perfect for budget travelers and backpackers. Clean, cozy spaces with essential amenities at unbeatable prices.",
+    detailedDescription: "Our Budget Rooms are designed for travelers seeking comfort without breaking the bank. These compact, well-appointed rooms offer essential amenities including a comfortable bed, private bathroom, and window with views. Perfect for solo travelers or couples looking to maximize their travel budget while enjoying quality accommodation.",
+    price: "1800",
+    discountedPrice: "1500",
+    discount: "₹300 off",
+    size: "200 sq ft",
+    maxGuests: "1-2 Adults",
+    capacity: "1-2 Adults",
+    bedType: "Single or Double Bed",
+    category: "budget",
+    features: [
+      "Budget-friendly pricing",
+      "Clean and comfortable",
+      "Private bathroom",
+      "Window with views",
+      "Essential amenities",
+      "Free Wi-Fi"
+    ],
+    images: [
+      "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80",
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=80",
+      "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200&q=80",
+      "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=1200&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1200&q=80"
+    ],
+    rating: 4.4,
+    reviews: 67,
+    available: true,
+    facilities: ["Free Wi-Fi", "Shared Kitchen", "Lounge Area", "Laundry Service"]
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.8,
-        staggerChildren: 0.15
+        duration: 0.6,
+        staggerChildren: 0.2
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
+      transition: { duration: 0.6 }
     }
   };
 
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
+  const features = [
+    {
+      icon: '💰',
+      title: 'Affordable Pricing',
+      description: 'Best value for money in Sikkim'
+    },
+    {
+      icon: '🌄',
+      title: 'Mountain Access',
+      description: 'Gateway to Himalayan adventures'
+    },
+    {
+      icon: '🤝',
+      title: 'Community Vibes',
+      description: 'Meet travelers from around the world'
+    },
+    {
+      icon: '✨',
+      title: 'Clean & Cozy',
+      description: 'Well-maintained budget accommodation'
     }
-  };
+  ];
+
+  const overlayCards = [
+    { icon: 'fas fa-hand-holding-usd', text: 'Budget Friendly' },
+    { icon: 'fas fa-door-open', text: 'Cozy Room' },
+    { icon: 'fas fa-wifi', text: 'Free Wi-Fi' }
+  ];
 
   return (
-     <motion.div
+    <motion.div
       className="room-detail-page budget-room"
       variants={containerVariants}
       initial="hidden"
@@ -78,186 +99,293 @@ const BudgetRoom = () => {
       {/* Hero Section */}
       <motion.section
         className="room-hero"
-        style={{ backgroundImage: `url(${room.image})` }}
+        style={{ backgroundImage: `url(${room.images[0]})` }}
         variants={itemVariants}
       >
         <div className="room-hero-overlay">
           <div className="room-hero-content">
-            <h1>{room.name}</h1>
-            <p className="room-price">₹{room.price}/night</p>
+            <h1>{room.title}</h1>
+            <div className="price-container">
+              {room.discountedPrice && (
+                <span className="original-price">₹{room.price}/night</span>
+              )}
+              <span className="room-price">₹{room.discountedPrice || room.price}/night</span>
+              {room.discount && (
+                <span className="discount-badge">{room.discount}</span>
+              )}
+            </div>
             <p className="room-description">{room.description}</p>
+            <div className="room-stats">
+              <span className="stat-item">
+                <i className="fas fa-users"></i> {room.capacity}
+              </span>
+              <span className="stat-item">
+                <i className="fas fa-expand-arrows-alt"></i> {room.size}
+              </span>
+              <span className="stat-item">
+                <i className="fas fa-bed"></i> {room.bedType}
+              </span>
+              <span className="stat-item">
+                <i className="fas fa-star"></i> {room.rating} ({room.reviews} reviews)
+              </span>
+            </div>
           </div>
         </div>
       </motion.section>
-    
-    <motion.div
-      className="room-detail-page"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      {/* Enhanced Hero Section */}
-      <motion.section
-        className="room-hero"
-        variants={itemVariants}
-      >
-        <div className="hero-background">
-          <img src={galleryImages[activeImage]} alt={room.name} />
-          <div className="hero-overlay"></div>
-        </div>
 
-        <div className="hero-content">
-          <motion.div className="hero-header" variants={itemVariants}>
-            <div className="room-badge">
-              <span className="badge-text">Budget Friendly</span>
-            </div>
-            <h1 className="room-title">{room.name}</h1>
-            <div className="room-price-tag">
-              <span className="price">₹{room.price}</span>
-              <span className="per-night">/night</span>
-            </div>
-            <p className="room-description">{room.description}</p>
-          </motion.div>
-
-          {/* Thumbnail Gallery */}
-          <motion.div className="thumbnail-gallery" variants={itemVariants}>
-            {galleryImages.map((image, index) => (
-              <motion.button
-                key={index}
-                className={`thumbnail ${activeImage === index ? 'active' : ''}`}
-                onClick={() => setActiveImage(index)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <img src={image} alt={`View ${index + 1}`} />
-              </motion.button>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* Room Details Section */}
+      {/* Room Details */}
       <section className="room-details-section">
         <div className="container">
-          <div className="room-details-grid">
-            {/* Room Information */}
-            <motion.div className="room-info-card" variants={cardVariants}>
-              <div className="card-header">
-                <h2>Room Overview</h2>
-                <div className="room-stats">
-                  <div className="stat">
-                    <i className="fas fa-users"></i>
-                    <span>Max {room.maxGuests} guests</span>
-                  </div>
-                  <div className="stat">
-                    <i className="fas fa-expand-arrows-alt"></i>
-                    <span>{room.size}</span>
-                  </div>
-                </div>
+          <motion.div className="room-details-grid" variants={itemVariants}>
+            <div className="room-info">
+              <h2>Room Overview</h2>
+              <p className="room-full-description">{room.detailedDescription}</p>
+              
+              <div className="room-meta">
+                <span className="meta-item">
+                  <i className="fas fa-users"></i>
+                  <strong>Capacity:</strong> {room.capacity}
+                </span>
+                <span className="meta-item">
+                  <i className="fas fa-expand-arrows-alt"></i>
+                  <strong>Size:</strong> {room.size}
+                </span>
+                <span className="meta-item">
+                  <i className="fas fa-bed"></i>
+                  <strong>Bed Type:</strong> {room.bedType}
+                </span>
+                <span className="meta-item">
+                  <i className="fas fa-door-open"></i>
+                  <strong>Category:</strong> Budget Room
+                </span>
               </div>
 
-              <div className="card-content">
-                <div className="features-section">
-                  <h3>Room Features</h3>
-                  <div className="features-grid">
-                    {room.features.map((feature, index) => (
-                      <motion.div
-                        key={index}
-                        className="feature-item"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <i className="fas fa-check-circle"></i>
-                        <span>{feature}</span>
-                      </motion.div>
-                    ))}
+              <div className="section-divider">
+                <h3>Room Features</h3>
+                <ul className="features-list">
+                  {room.features.map((feature, index) => (
+                    <li key={index}>
+                      <i className="fas fa-check-circle"></i> {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="section-divider">
+                <h3>Additional Facilities</h3>
+                <div className="facilities-list">
+                  {room.facilities.map((facility, index) => (
+                    <span key={index} className="facility-tag">
+                      <i className="fas fa-check"></i> {facility}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="room-gallery">
+              <h3>Room Gallery</h3>
+              <div className="gallery-grid">
+                {room.images.map((image, index) => (
+                  <div 
+                    key={index} 
+                    className={`gallery-item ${index === 0 ? 'main-image' : ''}`}
+                    style={{ backgroundImage: `url(${image})` }}
+                  >
+                    <div className="image-overlay">
+                      <span className="image-number">{index + 1}/{room.images.length}</span>
+                    </div>
                   </div>
-                </div>
-
-                <div className="amenities-section">
-                  <h3>Amenities & Services</h3>
-                  <div className="amenities-grid">
-                    {room.amenities.map((amenity, index) => (
-                      <motion.div
-                        key={index}
-                        className="amenity-item"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: (index + room.features.length) * 0.1 }}
-                      >
-                        <i className="fas fa-concierge-bell"></i>
-                        <span>{amenity}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
-            </motion.div>
-
-            {/* Booking Card */}
-            <motion.div className="booking-card" variants={cardVariants}>
-              <div className="card-header">
-                <h3>Book Your Stay</h3>
-                <div className="price-summary">
-                  <span className="price">₹{room.price}</span>
-                  <span className="period">per night</span>
-                </div>
-              </div>
-              <div className="card-content">
-                <BookingForm roomId={room.id} roomName={room.name} />
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Room Services */}
-          <motion.div variants={itemVariants}>
-            <RoomServices />
+              <p className="gallery-note">Click on images to view in full size</p>
+            </div>
           </motion.div>
+
         </div>
       </section>
 
-      {/* Additional Features Section */}
-      <motion.section className="additional-features" variants={itemVariants}>
-        <div className="container">
-          <h2>Why Choose Our Budget Rooms?</h2>
-          <div className="features-grid">
-            <motion.div className="feature-card" variants={cardVariants}>
-              <div className="feature-icon">
-                <i className="fas fa-wallet"></i>
+      {/* Homestay Rooms Section */}
+      <div style={{ width: '100%', padding: '40px 0', backgroundColor: '#f9f9f9' }}>
+        <HomestayRooms />
+      </div>
+
+      {/* Features Grid */}
+      <div className="sikkim-layout1">
+        {/* Main Heading */}
+        <div className="sikkim-header">
+          <motion.h2
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <i className="fas fa-mountain"></i> Discover Sikkim's Magic
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            Experience the perfect blend of Himalayan beauty, culture, and hospitality
+          </motion.p>
+        </div>
+
+        {/* Main Container */}
+        <div className="sikkim-container">
+          
+          {/* Left Column: Features */}
+          <div className="features-column">
+            <motion.h3
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <i className="fas fa-star"></i> Why Choose Us
+            </motion.h3>
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                className="feature-tile"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 + 0.2 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className="tile-icon">{feature.icon}</div>
+                <div className="tile-content">
+                  <h4>{feature.title}</h4>
+                  <p>{feature.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Center Column: Image with Overlay */}
+          <div className="image-column">
+            <motion.h3
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <i className="fas fa-camera"></i> Himalayan Views
+            </motion.h3>
+            <div className="image-wrapper">
+              <img
+                src="/assets/gallery/Mountainview.avif"
+                alt="Sikkim landscape"
+                loading="lazy"
+              />
+              
+              {/* Overlay Cards - Stacked Design */}
+              <div className="card-stack">
+                {overlayCards.map((card, index) => (
+                  <motion.div
+                    key={index}
+                    className="stack-card"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 + (index * 0.1) }}
+                    whileHover={{ x: 10 }}
+                    style={{ 
+                      transform: `translateY(${index * -15}px)`,
+                      zIndex: overlayCards.length - index
+                    }}
+                  >
+                    <i className={card.icon}></i>
+                    <span>{card.text}</span>
+                  </motion.div>
+                ))}
               </div>
-              <h4>Affordable Luxury</h4>
-              <p>Experience comfort and quality at budget-friendly prices</p>
+
+              {/* Floating Badge */}
+              <motion.div
+                className="floating-badge"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <i className="fas fa-award"></i>
+                <span>Best Budget 2024</span>
+              </motion.div>
+            </div>
+
+            {/* Bottom Testimonial */}
+            <motion.div
+              className="testimonial-box"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.9 }}
+            >
+              <div className="testimonial-content">
+                <i className="fas fa-quote-left"></i>
+                <p>"Great value for money and wonderful hospitality!"</p>
+                <div className="guest-info">
+                  <span>Priya Singh</span>
+                  <span className="location">From Bangalore</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Additional Info */}
+          <div className="info-column">
+            <motion.h3
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <i className="fas fa-info-circle"></i> More Information
+            </motion.h3>
+            
+            {/* Sikkim Specials */}
+            <motion.div
+              className="sikkim-special"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h4>Budget Travel Tips</h4>
+              <ul className="special-list">
+                <li><i className="fas fa-leaf"></i> Explore Local Markets</li>
+                <li><i className="fas fa-hiking"></i> Free Nature Walks</li>
+                <li><i className="fas fa-utensils"></i> Local Food Stalls</li>
+                <li><i className="fas fa-map"></i> Budget Treks</li>
+              </ul>
             </motion.div>
 
-            <motion.div className="feature-card" variants={cardVariants}>
-              <div className="feature-icon">
-                <i className="fas fa-mountain"></i>
+            {/* Weather Widget */}
+            <motion.div
+              className="weather-widget"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="weather-icon">⛅</div>
+              <div className="weather-info">
+                <span className="temp">18°C</span>
+                <span className="location">Gangtok</span>
+                <span className="desc">Perfect for trekking</span>
               </div>
-              <h4>Mountain Views</h4>
-              <p>Wake up to breathtaking Himalayan scenery every morning</p>
             </motion.div>
 
-            <motion.div className="feature-card" variants={cardVariants}>
-              <div className="feature-icon">
-                <i className="fas fa-utensils"></i>
-              </div>
-              <h4>Local Cuisine</h4>
-              <p>Enjoy authentic Sikkimese meals prepared with local ingredients</p>
-            </motion.div>
-
-            <motion.div className="feature-card" variants={cardVariants}>
-              <div className="feature-icon">
-                <i className="fas fa-wifi"></i>
-              </div>
-              <h4>Free Wi-Fi</h4>
-              <p>Stay connected with high-speed internet throughout your stay</p>
+            {/* Quick Booking */}
+            <motion.div
+              className="booking-prompt"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <h4>Ready to Visit?</h4>
+              <p>Book your budget stay in Sikkim now</p>
+              <button className="availability-btn">
+                Check Availability
+              </button>
             </motion.div>
           </div>
         </div>
-      </motion.section>
+      </div>
+        
     </motion.div>
-     </motion.div>
   );
 };
 

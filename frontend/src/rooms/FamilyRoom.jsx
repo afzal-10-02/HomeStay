@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import BookingForm from '../components/BookingForm';
+import HomestayRooms from './HomestayRooms';
 
 const FamilyRoom = () => {
   // Local room data
@@ -58,7 +58,34 @@ const FamilyRoom = () => {
       transition: { duration: 0.6 }
     }
   };
+const features = [
+    {
+      icon: '🏔️',
+      title: 'Mountain Views',
+      description: 'Breathtaking Himalayan landscapes from every room'
+    },
+    {
+      icon: '🍽️',
+      title: 'Local Cuisine',
+      description: 'Authentic Sikkimese food made with traditional recipes'
+    },
+    {
+      icon: '🌱',
+      title: 'Sustainable Living',
+      description: 'Eco-friendly practices and community support'
+    },
+    {
+      icon: '👨‍👩‍👧‍👦',
+      title: 'Family Atmosphere',
+      description: 'Warm hospitality and homely environment'
+    }
+  ];
 
+  const overlayCards = [
+    { icon: 'fas fa-mountain', text: 'Himalayan Views' },
+    { icon: 'fas fa-home', text: 'Cozy Stay' },
+    { icon: 'fas fa-utensils', text: 'Local Cuisine' }
+  ];
   return (
     <motion.div
       className="room-detail-page family-room"
@@ -175,62 +202,187 @@ const FamilyRoom = () => {
         </div>
       </section>
 
-    </motion.div>
-  );
-};
-
-// Simple Room Services Component (placed outside FamilyRoom but in same file)
-const SimpleRoomServices = () => {
-  const services = [
-    { id: 1, name: "24/7 Room Service", price: "₹200", icon: "🍽️", category: "dining" },
-    { id: 2, name: "Spa & Massage", price: "₹1500", icon: "💆", category: "wellness" },
-    { id: 3, name: "Airport Transfer", price: "₹2500", icon: "🚗", category: "transport" },
-    { id: 4, name: "Baby Sitting", price: "₹500/hour", icon: "👶", category: "family" },
-    { id: 5, name: "Laundry Service", price: "₹300", icon: "👕", category: "wellness" },
-    { id: 6, name: "Guided Tour", price: "₹4000", icon: "🗺️", category: "transport" },
-    { id: 7, name: "Business Center", price: "Free", icon: "💼", category: "business" },
-    { id: 8, name: "Special Occasion Setup", price: "₹2000", icon: "🎉", category: "dining" },
-  ];
-
-  return (
-    <div className="room-services">
-      <div className="services-header">
-        <h3>Enhance Your Stay with Our Premium Services</h3>
-        <p>Choose from a variety of additional services to make your stay more comfortable</p>
+      {/* Homestay Rooms Section */}
+      <div style={{ width: '100%', padding: '40px 0', backgroundColor: '#f9f9f9' }}>
+        <HomestayRooms />
       </div>
 
-      <div className="services-grid">
-        {services.map(service => (
-          <div key={service.id} className="service-card">
-            <div className="service-icon">
-              {service.icon}
-            </div>
-            <div className="service-info">
-              <h4>{service.name}</h4>
-              <p>Professional service delivered to your room</p>
-              <div className="service-meta">
-                <span className={`service-category ${service.category}`}>
-                  {service.category}
-                </span>
-                <span className="service-price">
-                  {service.price}
-                </span>
-                <span className="service-duration">
-                  <i className="fas fa-clock"></i> 24/7 Available
-                </span>
-              </div>
-              <button className="service-book-btn">
-                <i className="fas fa-plus"></i> Add Service
-              </button>
-            </div>
+  {/* Features Grid */}
+       <div className="sikkim-layout1">
+  {/* Main Heading */}
+  <div className="sikkim-header">
+    <motion.h2
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <i className="fas fa-mountain"></i> Discover Sikkim's Magic
+    </motion.h2>
+    <motion.p
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.2 }}
+    >
+      Experience the perfect blend of Himalayan beauty, culture, and hospitality
+    </motion.p>
+  </div>
+
+  {/* Main Container */}
+  <div className="sikkim-container">
+    
+    {/* Left Column: Features */}
+    <div className="features-column">
+      <motion.h3
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <i className="fas fa-star"></i> Why Choose Us
+      </motion.h3>
+      {features.map((feature, index) => (
+        <motion.div
+          key={index}
+          className="feature-tile"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: index * 0.1 + 0.2 }}
+          whileHover={{ scale: 1.05 }}
+        >
+          <div className="tile-icon">{feature.icon}</div>
+          <div className="tile-content">
+            <h4>{feature.title}</h4>
+            <p>{feature.description}</p>
           </div>
-        ))}
+        </motion.div>
+      ))}
+    </div>
+
+    {/* Center Column: Image with Overlay */}
+    <div className="image-column">
+      <motion.h3
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <i className="fas fa-camera"></i> Himalayan Views
+      </motion.h3>
+      <div className="image-wrapper">
+        <img
+          src="/assets/gallery/Mountainview.avif"
+          alt="Sikkim landscape"
+          loading="lazy"
+        />
+        
+        {/* Overlay Cards - Stacked Design */}
+        <div className="card-stack">
+          {overlayCards.map((card, index) => (
+            <motion.div
+              key={index}
+              className="stack-card"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 + (index * 0.1) }}
+              whileHover={{ x: 10 }}
+              style={{ 
+                transform: `translateY(${index * -15}px)`,
+                zIndex: overlayCards.length - index
+              }}
+            >
+              <i className={card.icon}></i>
+              <span>{card.text}</span>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Floating Badge */}
+        <motion.div
+          className="floating-badge"
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <i className="fas fa-award"></i>
+          <span>Best Homestay 2024</span>
+        </motion.div>
       </div>
 
-      <div className="services-note">
-        <p><i className="fas fa-info-circle"></i> All services can be booked through our concierge. Charges will be added to your final bill.</p>
-      </div>
+      {/* Bottom Testimonial */}
+      <motion.div
+        className="testimonial-box"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.9 }}
+      >
+        <div className="testimonial-content">
+          <i className="fas fa-quote-left"></i>
+          <p>"Most authentic Himalayan experience we've ever had!"</p>
+          <div className="guest-info">
+            <span>Rahul Sharma</span>
+            <span className="location">From Delhi</span>
+          </div>
+        </div>
+      </motion.div>
     </div>
+
+    {/* Right Column: Additional Info */}
+    <div className="info-column">
+      <motion.h3
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <i className="fas fa-info-circle"></i> More Information
+      </motion.h3>
+      
+      {/* Sikkim Specials */}
+      <motion.div
+        className="sikkim-special"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        <h4>Sikkim Specials</h4>
+        <ul className="special-list">
+          <li><i className="fas fa-leaf"></i> Organic Tea Gardens</li>
+          <li><i className="fas fa-hiking"></i> Guided Mountain Treks</li>
+          <li><i className="fas fa-spa"></i> Hot Spring Access</li>
+          <li><i className="fas fa-pray"></i> Monastery Visits</li>
+        </ul>
+      </motion.div>
+
+      {/* Weather Widget */}
+      <motion.div
+        className="weather-widget"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        <div className="weather-icon">⛅</div>
+        <div className="weather-info">
+          <span className="temp">18°C</span>
+          <span className="location">Gangtok</span>
+          <span className="desc">Perfect for trekking</span>
+        </div>
+      </motion.div>
+
+      {/* Quick Booking */}
+      <motion.div
+        className="booking-prompt"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+        whileHover={{ scale: 1.02 }}
+      >
+        <h4>Ready to Visit?</h4>
+        <p>Check availability for your Himalayan retreat</p>
+        <button className="availability-btn">
+          Check Availability
+        </button>
+      </motion.div>
+    </div>
+  </div>
+</div>
+        
+    </motion.div>
   );
 };
 

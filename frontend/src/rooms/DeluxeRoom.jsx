@@ -1,70 +1,51 @@
 import { motion } from 'framer-motion';
-import { useEffect, useRef } from 'react';
 import BookingForm from '../components/BookingForm';
+import HomestayRooms from './HomestayRooms';
 
 const DeluxeRoom = () => {
-  const containerRef = useRef(null);
-  
-  // Sikkim-inspired deluxe room data
+  // Local room data
   const room = {
-    id: 1,
+    id: 4,
     slug: "deluxe",
-    title: "Kanchenjunga Deluxe Suite",
-    name: "Kanchenjunga Deluxe Suite",
-    description: "Experience luxury amidst the Himalayas with panoramic mountain views and traditional Sikkimese decor. Wake up to the sight of snow-capped peaks from your private balcony.",
-    detailedDescription: `Our Deluxe Suite offers an authentic Himalayan luxury experience, blending modern comfort with traditional Sikkimese architecture. Each suite is thoughtfully designed with handcrafted wooden furniture, locally woven textiles, and breathtaking views of the Kanchenjunga range.
-
-The suite features a separate living area with a traditional Bukhari (wood stove), perfect for cozy evenings. The bedroom opens to a private balcony where you can enjoy your morning tea while watching the sunrise over the Himalayas.`,
-    price: "8500",
+    title: "Deluxe Room",
+    name: "Deluxe Room",
+    description: "Premium luxury rooms featuring high-end amenities and breathtaking views. Experience ultimate comfort and elegance during your Himalayan retreat.",
+    detailedDescription: "Our Deluxe Rooms represent the pinnacle of luxury accommodations in Sikkim. Each room is elegantly appointed with premium furnishings, spa-quality bathrooms, and panoramic mountain views. Modern technology meets traditional aesthetics, creating the perfect sanctuary for discerning travelers seeking an unforgettable experience.",
+    price: "9800",
     discountedPrice: "7800",
-    discount: "₹700 off",
-    size: "650 sq ft",
+    discount: "₹2000 off",
+    size: "500 sq ft",
     maxGuests: "2 Adults",
     capacity: "2 Adults",
-    bedType: "King Bed with Canopy",
+    bedType: "King Size Bed",
     category: "deluxe",
     features: [
-      "Private balcony with mountain view",
-      "Traditional Bukhari fireplace",
-      "Handcrafted Sikkimese furniture",
-      "Premium Himalayan toiletries",
-      "Yak wool blankets & quilts",
-      "24-hour butler service"
-    ],
-    amenities: [
-      "King-size canopy bed with premium bedding",
-      "Private balcony facing Kanchenjunga",
-      "Traditional wood-burning fireplace",
-      "Smart TV with streaming services",
-      "Free high-speed Wi-Fi",
-      "Air conditioning & underfloor heating",
-      "Mini bar with local beverages",
-      "Nespresso coffee machine with local tea selection",
-      "Separate living area with sofa",
-      "Walk-in rain shower & bathtub",
-      "Yak wool bathrobes & slippers",
-      "Traditional Sikkimese welcome kit"
+      "Premium luxury furnishings",
+      "King Size bed with premium linens",
+      "Spa-quality bathroom",
+      "Panoramic mountain views",
+      "High-speed internet",
+      "Climate control"
     ],
     images: [
-      "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=1200&q=80",
-      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=1200&q=80",
       "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&q=80",
-      "https://images.unsplash.com/photo-1558036117-15e82a2c9a9a?w=1200&q=80",
-      "https://images.unsplash.com/photo-1584132915807-fd1f5fbc078f?w=1200&q=80"
+      "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80",
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=80",
+      "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1200&q=80"
     ],
     rating: 4.9,
-    reviews: 127,
+    reviews: 156,
     available: true,
-    facilities: ["Private Butler", "Mountain View Balcony", "Fireplace", "Luxury Bath Amenities", "24/7 Concierge"]
+    facilities: ["24/7 Room Service", "Concierge", "Premium Spa", "Wine Cellar", "Private Terrace", "Butler Service"]
   };
-  
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: 0.6,
         staggerChildren: 0.2
       }
     }
@@ -75,53 +56,48 @@ The suite features a separate living area with a traditional Bukhari (wood stove
     visible: {
       opacity: 1,
       y: 0,
-      transition: { 
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
+      transition: { duration: 0.6 }
     }
   };
 
-  const floatAnimation = {
-    float: {
-      y: [0, -15, 0],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
+  const features = [
+    {
+      icon: '👑',
+      title: 'Royal Comfort',
+      description: 'Premium luxury experience with every detail perfected'
+    },
+    {
+      icon: '🏔️',
+      title: 'Mountain Majesty',
+      description: 'Stunning panoramic views of the Himalayan peaks'
+    },
+    {
+      icon: '💆',
+      title: 'Spa Wellness',
+      description: 'Premium spa facilities and wellness treatments'
+    },
+    {
+      icon: '⭐',
+      title: 'Exclusive Dining',
+      description: 'Gourmet cuisine prepared by award-winning chefs'
     }
-  };
+  ];
 
-  // Snow animation for different screen sizes
-  useEffect(() => {
-    const updateSnowflakes = () => {
-      const snowflakes = document.querySelectorAll('.snowflake');
-      snowflakes.forEach((flake) => {
-        flake.style.left = `${Math.random() * 100}%`;
-        flake.style.fontSize = `${Math.random() * 10 + 10}px`;
-      });
-    };
-
-    updateSnowflakes();
-    window.addEventListener('resize', updateSnowflakes);
-    
-    return () => {
-      window.removeEventListener('resize', updateSnowflakes);
-    };
-  }, []);
+  const overlayCards = [
+    { icon: 'fas fa-crown', text: 'Luxury Deluxe' },
+    { icon: 'fas fa-spa', text: 'Premium Spa' },
+    { icon: 'fas fa-utensils', text: 'Fine Dining' }
+  ];
 
   return (
     <motion.div
-      ref={containerRef}
       className="room-detail-page deluxe-room"
+      variants={containerVariants}
       initial="hidden"
       animate="visible"
-      variants={containerVariants}
     >
-      {/* Himalayan Hero Section */}
-       <motion.section
+      {/* Hero Section */}
+      <motion.section
         className="room-hero"
         style={{ backgroundImage: `url(${room.images[0]})` }}
         variants={itemVariants}
@@ -157,215 +133,258 @@ The suite features a separate living area with a traditional Bukhari (wood stove
         </div>
       </motion.section>
 
-      {/* Room Details with Sikkim Aesthetic */}
+      {/* Room Details */}
       <section className="room-details-section">
         <div className="container">
-          <div className="room-details-grid">
-            {/* Left Column - Room Info */}
-            <motion.div 
-              className="room-info"
-              variants={itemVariants}
-            >
-              <div className="section-header">
-                <h2><i className="fas fa-mountain"></i> Suite Overview</h2>
-                <div className="divider"></div>
-              </div>
-              
+          <motion.div className="room-details-grid" variants={itemVariants}>
+            <div className="room-info">
+              <h2>Room Overview</h2>
               <p className="room-full-description">{room.detailedDescription}</p>
               
-              <motion.div 
-                className="room-meta"
-                whileHover={{ scale: 1.02 }}
-              >
-                {[
-                  { icon: "fas fa-eye", label: "View", value: "Kanchenjunga Range" },
-                  { icon: "fas fa-expand-arrows-alt", label: "Size", value: room.size },
-                  { icon: "fas fa-fire", label: "Feature", value: "Traditional Bukhari" },
-                  { icon: "fas fa-concierge-bell", label: "Service", value: "Private Butler" }
-                ].map((item, index) => (
-                  <span key={index} className="meta-item">
-                    <i className={item.icon}></i>
-                    <strong>{item.label}:</strong> {item.value}
-                  </span>
-                ))}
-              </motion.div>
+              <div className="room-meta">
+                <span className="meta-item">
+                  <i className="fas fa-users"></i>
+                  <strong>Capacity:</strong> {room.capacity}
+                </span>
+                <span className="meta-item">
+                  <i className="fas fa-expand-arrows-alt"></i>
+                  <strong>Size:</strong> {room.size}
+                </span>
+                <span className="meta-item">
+                  <i className="fas fa-bed"></i>
+                  <strong>Bed Type:</strong> {room.bedType}
+                </span>
+                <span className="meta-item">
+                  <i className="fas fa-door-open"></i>
+                  <strong>Category:</strong> Deluxe Room
+                </span>
+              </div>
 
-              {/* Sikkimese Features */}
-              <motion.div 
-                className="section-divider"
-                variants={itemVariants}
-              >
-                <h3><i className="fas fa-gem"></i> Exclusive Features</h3>
+              <div className="section-divider">
+                <h3>Room Features</h3>
                 <ul className="features-list">
                   {room.features.map((feature, index) => (
-                    <motion.li 
-                      key={index}
-                      whileHover={{ x: 10 }}
-                      transition={{ type: "spring" }}
-                      variants={itemVariants}
-                    >
+                    <li key={index}>
                       <i className="fas fa-check-circle"></i> {feature}
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
 
-              {/* Luxury Amenities */}
-              {/* <motion.div 
-                className="section-divider"
-                variants={itemVariants}
-              >
-                <h3><i className="fas fa-spa"></i> Luxury Amenities</h3>
-                <div className="amenities-grid">
-                  {room.amenities.map((amenity, index) => (
-                    <motion.div 
-                      key={index} 
-                      className="amenity-item"
-                      whileHover={{ scale: 1.05 }}
-                      animate={floatAnimation.float}
-                      variants={itemVariants}
-                    >
-                      <div className="amenity-icon">
-                        {index === 0 && "👑"}
-                        {index === 1 && "🏔️"}
-                        {index === 2 && "🔥"}
-                        {index === 3 && "📺"}
-                        {index > 3 && "✨"}
-                      </div>
-                      <span>{amenity}</span>
-                    </motion.div>
+              <div className="section-divider">
+                <h3>Additional Facilities</h3>
+                <div className="facilities-list">
+                  {room.facilities.map((facility, index) => (
+                    <span key={index} className="facility-tag">
+                      <i className="fas fa-check"></i> {facility}
+                    </span>
                   ))}
                 </div>
-              </motion.div> */}
-            </motion.div>
+              </div>
+            </div>
 
-            {/* Right Column - Gallery */}
-            <motion.div 
-              className="room-gallery"
-              variants={itemVariants}
-            >
-              <h3>
-                <i className="fas fa-images"></i> Himalayan Views
-              </h3>
+            <div className="room-gallery">
+              <h3>Room Gallery</h3>
               <div className="gallery-grid">
                 {room.images.map((image, index) => (
-                  <motion.div 
+                  <div 
                     key={index} 
                     className={`gallery-item ${index === 0 ? 'main-image' : ''}`}
                     style={{ backgroundImage: `url(${image})` }}
-                    whileHover={{ scale: 1.05, zIndex: 10 }}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.1 }}
                   >
                     <div className="image-overlay">
-                      <span className="image-label">
-                        {index === 0 && "🏔️ Main Suite"}
-                        {index === 1 && "🔥 Fireplace"}
-                        {index === 2 && "🛁 Bathroom"}
-                        {index === 3 && "🍽️ Living Area"}
-                        {index === 4 && "🌅 Balcony View"}
-                      </span>
+                      <span className="image-number">{index + 1}/{room.images.length}</span>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-              <motion.p 
-                className="gallery-note"
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <i className="fas fa-info-circle"></i> Each image showcases authentic Sikkimese luxury
-              </motion.p>
-            </motion.div>
-          </div>
-
+              <p className="gallery-note">Click on images to view in full size</p>
+            </div>
+          </motion.div>
 
         </div>
       </section>
 
-      {/* Additional Himalayan Luxury Features */}
-      <motion.section 
-        className="additional-info"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={containerVariants}
-      >
-        <div className="container">
-          <motion.h2 
-            className="section-title"
-            variants={itemVariants}
+      {/* Homestay Rooms Section */}
+      <div style={{ width: '100%', padding: '40px 0', backgroundColor: '#f9f9f9' }}>
+        <HomestayRooms />
+      </div>
+
+      {/* Features Grid */}
+      <div className="sikkim-layout1">
+        {/* Main Heading */}
+        <div className="sikkim-header">
+          <motion.h2
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-          Himalayan Luxury Experiences
+            <i className="fas fa-mountain"></i> Discover Sikkim's Magic
           </motion.h2>
-          <div className="info-grid">
-            {[
-              {
-                icon: "🔥",
-                title: "Traditional Bukhari Evenings",
-                desc: "Cozy evenings by traditional wood-burning fireplace with local storytelling"
-              },
-              {
-                icon: "🏔️",
-                title: "Sunrise Mountain Viewing",
-                desc: "Private balcony sunrise sessions with hot Sikkimese tea service"
-              },
-              {
-                icon: "🛁",
-                title: "Herbal Bath Rituals",
-                desc: "Luxury bath amenities infused with Himalayan herbs and flowers"
-              },
-              {
-                icon: "👑",
-                title: "24/7 Butler Service",
-                desc: "Personalized service for all your needs throughout your stay"
-              }
-            ].map((item, index) => (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            Experience the perfect blend of Himalayan beauty, culture, and hospitality
+          </motion.p>
+        </div>
+
+        {/* Main Container */}
+        <div className="sikkim-container">
+          
+          {/* Left Column: Features */}
+          <div className="features-column">
+            <motion.h3
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <i className="fas fa-star"></i> Why Choose Us
+            </motion.h3>
+            {features.map((feature, index) => (
               <motion.div
                 key={index}
-                className="info-card"
-                variants={itemVariants}
-                whileHover={{ scale: 1.05, rotateY: 5 }}
+                className="feature-tile"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 + 0.2 }}
+                whileHover={{ scale: 1.05 }}
               >
-                <motion.div 
-                  className="card-icon"
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  {item.icon}
-                </motion.div>
-                <h4>{item.title}</h4>
-                <p>{item.desc}</p>
+                <div className="tile-icon">{feature.icon}</div>
+                <div className="tile-content">
+                  <h4>{feature.title}</h4>
+                  <p>{feature.description}</p>
+                </div>
               </motion.div>
             ))}
           </div>
-        </div>
-      </motion.section>
 
-      {/* Floating Snow Animation */}
-      <div className="snow-animation">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="snowflake"
-            initial={{ y: -20 }}
-            animate={{
-              y: ['0vh', '100vh'],
-              x: [0, Math.random() * 100 - 50],
-              rotate: [0, 360]
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              ease: "linear",
-              delay: Math.random() * 5
-            }}
-          >
-            ❄️
-          </motion.div>
-        ))}
+          {/* Center Column: Image with Overlay */}
+          <div className="image-column">
+            <motion.h3
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <i className="fas fa-camera"></i> Himalayan Views
+            </motion.h3>
+            <div className="image-wrapper">
+              <img
+                src="/assets/gallery/Mountainview.avif"
+                alt="Sikkim landscape"
+                loading="lazy"
+              />
+              
+              {/* Overlay Cards - Stacked Design */}
+              <div className="card-stack">
+                {overlayCards.map((card, index) => (
+                  <motion.div
+                    key={index}
+                    className="stack-card"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 + (index * 0.1) }}
+                    whileHover={{ x: 10 }}
+                    style={{ 
+                      transform: `translateY(${index * -15}px)`,
+                      zIndex: overlayCards.length - index
+                    }}
+                  >
+                    <i className={card.icon}></i>
+                    <span>{card.text}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Floating Badge */}
+              <motion.div
+                className="floating-badge"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <i className="fas fa-award"></i>
+                <span>Luxury Premium 2024</span>
+              </motion.div>
+            </div>
+
+            {/* Bottom Testimonial */}
+            <motion.div
+              className="testimonial-box"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.9 }}
+            >
+              <div className="testimonial-content">
+                <i className="fas fa-quote-left"></i>
+                <p>"Absolutely luxurious! The most memorable stay of my life!"</p>
+                <div className="guest-info">
+                  <span>Vikram Bhat</span>
+                  <span className="location">From Mumbai</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Additional Info */}
+          <div className="info-column">
+            <motion.h3
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <i className="fas fa-info-circle"></i> More Information
+            </motion.h3>
+            
+            {/* Sikkim Specials */}
+            <motion.div
+              className="sikkim-special"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h4>Luxury Experiences</h4>
+              <ul className="special-list">
+                <li><i className="fas fa-crown"></i> VIP Mountain Retreats</li>
+                <li><i className="fas fa-spa"></i> Premium Spa Treatments</li>
+                <li><i className="fas fa-champagne-glass"></i> Fine Wine Tasting</li>
+                <li><i className="fas fa-heart"></i> Romantic Dinner Setup</li>
+              </ul>
+            </motion.div>
+
+            {/* Weather Widget */}
+            <motion.div
+              className="weather-widget"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="weather-icon">⛅</div>
+              <div className="weather-info">
+                <span className="temp">18°C</span>
+                <span className="location">Gangtok</span>
+                <span className="desc">Perfect for trekking</span>
+              </div>
+            </motion.div>
+
+            {/* Quick Booking */}
+            <motion.div
+              className="booking-prompt"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <h4>Ready to Visit?</h4>
+              <p>Reserve your luxurious Deluxe Room today</p>
+              <button className="availability-btn">
+                Check Availability
+              </button>
+            </motion.div>
+          </div>
+        </div>
       </div>
+        
     </motion.div>
   );
 };

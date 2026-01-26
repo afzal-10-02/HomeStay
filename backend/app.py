@@ -35,6 +35,7 @@ app = CreateApp()
 
 from APIs.auth import *
 from APIs.user import *
+from APIs.email import *
 
 if __name__ == "__main__":
     app.run()

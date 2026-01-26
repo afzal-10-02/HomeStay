@@ -6,12 +6,14 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    phone: ''
+    confirmPassword: ''
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Define API Endpoint (Replace with your actual backend URL)
+  const API_URL = 'http://localhost:5000/signup';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,8 +21,14 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
       ...prev,
       [name]: value
     }));
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+    
+    if (errors[name] || errors.general) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        delete newErrors.general;
+        return newErrors;
+      });
     }
   };
 
@@ -51,25 +59,53 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
     }
     
     setIsSubmitting(true);
+    setErrors({}); 
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // 1. Prepare Payload
+      const payload = {
+        fullName: formData.name,
+        email: formData.email,
+        password: formData.password
+      };
+
+      // 2. Call the Backend
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      // 3. Handle Backend Errors
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to create account. Please try again.');
+      }
       
-      console.log('Signup attempt:', formData);
-      alert('Account created successfully!');
-      onClose();
+      console.log('Signup successful:', data);
+
+      // 4. Success Actions
+      alert('Account created successfully! Please log in.');
+      
       setFormData({
         name: '',
         email: '',
         password: '',
-        confirmPassword: '',
-        phone: ''
+        confirmPassword: ''
       });
-      setErrors({});
+      
+      onClose();
+      switchToLogin();
+
     } catch (error) {
-      alert('Signup failed. Please try again.');
       console.error('Signup error:', error);
+      setErrors(prev => ({
+        ...prev,
+        general: error.message || 'An unexpected error occurred.'
+      }));
     } finally {
       setIsSubmitting(false);
     }
@@ -113,6 +149,28 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
 
             <div className="modal-body">
               <form onSubmit={handleSubmit} className="auth-form" noValidate>
+                
+                {/* General API Error Display */}
+                {errors.general && (
+                  <motion.div 
+                    className="error-alert" 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    style={{ 
+                      background: '#fee2e2', 
+                      color: '#dc2626', 
+                      padding: '10px', 
+                      borderRadius: '6px', 
+                      fontSize: '0.9rem',
+                      marginBottom: '15px',
+                      border: '1px solid #fecaca',
+                      textAlign: 'center'
+                    }}
+                  >
+                    {errors.general}
+                  </motion.div>
+                )}
+
                 <div className="form-group">
                   <div className="input-with-icon">
                     <svg className="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -153,22 +211,7 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
                   {errors.email && <span className="error-message">{errors.email}</span>}
                 </div>
 
-                <div className="form-group">
-                  <div className="input-with-icon">
-                    <svg className="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path d="M6.62 10.79C8.06 13.62 10.38 15.94 13.21 17.38L15.41 15.18C15.68 14.91 16.08 14.82 16.43 14.94C17.55 15.31 18.76 15.5 20 15.5C20.55 15.5 21 15.95 21 16.5V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" fill="#666"/>
-                    </svg>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="Phone Number"
-                      disabled={isSubmitting}
-                    />
-                  </div>
-                </div>
+                {/* Phone number field removed here */}
 
                 <div className="form-group">
                   <div className="input-with-icon">

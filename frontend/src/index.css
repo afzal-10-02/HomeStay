@@ -12847,3 +12847,30 @@ transform:translateY(-3px);
     font-size: 24px;
   }
 }
+
+
+/* 1. Make the wrapper relative so the icon stays inside it */
+.input-with-icon {
+  position: relative;
+  width: 100%;
+}
+
+/* 2. Position the icon to float over the left side */
+.input-icon {
+  position: absolute;
+  left: 12px;        /* Distance from the left edge */
+  top: 50%;          /* Move down 50% */
+  transform: translateY(-50%); /* Center it vertically perfect */
+  pointer-events: none; /* Allows user to click "through" the icon to select the input */
+  z-index: 10;
+}
+
+/* 3. Add padding to the input so text doesn't overlap the icon */
+.input-with-icon input {
+  width: 100%;
+  padding-left: 40px; /* CRITICAL: This pushes the text to the right of the icon */
+  /* Add your other input styles here (height, border, etc.) */
+  height: 45px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}

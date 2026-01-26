@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Added useNavigate
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LoginModal from "./LoginModal";
@@ -13,11 +13,53 @@ const Navbar = () => {
   const [activeRegion, setActiveRegion] = useState(null);
   const [isMobileView, setIsMobileView] = useState(false);
   const [openRooms, setOpenRooms] = useState(false);
+  
+  // New State for User Authentication
+  const [user, setUser] = useState(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const navbarRef = useRef(null);
   const homestayRef = useRef(null);
   const roomsRef = useRef(null);
+
+  // --- Auth Logic ---
+
+  // Function to check local storage
+  const checkLoginStatus = () => {
+    // We check for authToken (from your previous code) OR a specific isLoggedIn flag
+    const token = localStorage.getItem('authToken');
+    const loggedInFlag = localStorage.getItem('isLoggedIn');
+    
+    // Retrieve name if available, otherwise default to 'Guest'
+    // Note: You might need to update your LoginModal to store 'userName'
+    const storedName = localStorage.getItem('username'); 
+
+    if (token || loggedInFlag === 'true') {
+      setUser({ name: storedName || 'Traveler' });
+    } else {
+      setUser(null);
+    }
+  };
+
+  // Check on mount AND when modals close (to update UI immediately after login)
+  useEffect(() => {
+    checkLoginStatus();
+  }, [isLoginModalOpen, isSignupModalOpen]);
+
+  const handleLogout = () => {
+    // Clear all auth related items
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
+    
+    setUser(null);
+    setIsMenuOpen(false); // Close mobile menu if open
+    navigate('/'); // Optional: Redirect to home
+    // alert('Logged out successfully');
+  };
+
+  // --- End Auth Logic ---
 
   // Check screen size for mobile view
   useEffect(() => {
@@ -144,9 +186,9 @@ const Navbar = () => {
                       onMouseLeave={() => setOpenRooms(false)}
                     >
                       <Link to="/deluxe" onClick={closeMenu}>Deluxe Room</Link>
-<Link to="/family" onClick={closeMenu}>Family Suite</Link>
-<Link to="/cottage" onClick={closeMenu}>Traditional Cottage</Link>
-<Link to="/budget" onClick={closeMenu}>Budget Room</Link>
+                      <Link to="/family" onClick={closeMenu}>Family Suite</Link>
+                      <Link to="/cottage" onClick={closeMenu}>Traditional Cottage</Link>
+                      <Link to="/budget" onClick={closeMenu}>Budget Room</Link>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -227,7 +269,6 @@ const Navbar = () => {
                               <>
                                 <Link to="/homestay/north/lachung" onClick={closeMenu}>Lachung</Link>
                                 <Link to="/homestay/north/lachen" onClick={closeMenu}>Lachen</Link>
-                                {/* <Link to="/homestay/north/yumthang" onClick={closeMenu}>Yumthang Valley</Link> */}
                               </>
                             )}
                             {activeRegion === "East Sikkim" && (
@@ -282,15 +323,34 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* Auth Buttons */}
+          {/* Desktop Auth Buttons / User Menu */}
           {!isMobileView && (
             <div className="nav-actions">
-              <button className="btn btn-outline" onClick={openLoginModal}>
-                Log in
-              </button>
-              <button className="btn btn-primary" onClick={openSignupModal}>
-                Sign Up
-              </button>
+              {user ? (
+                // Logged In View
+                <div className="user-logged-in" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                  <span className="user-greeting" style={{ fontWeight: '500', color: '#333' }}>
+                    Hi, {user.name}
+                  </span>
+                  <button 
+                    className="btn btn-outline" 
+                    onClick={handleLogout}
+                    style={{ padding: '8px 16px', fontSize: '0.9rem' }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                // Guest View
+                <>
+                  <button className="btn btn-outline" onClick={openLoginModal}>
+                    Log in
+                  </button>
+                  <button className="btn btn-primary" onClick={openSignupModal}>
+                    Sign Up
+                  </button>
+                </>
+              )}
             </div>
           )}
 
@@ -330,7 +390,7 @@ const Navbar = () => {
               transition={{ type: "tween", duration: 0.3 }}
             >
               <div className="mobile-menu-header">
-                <h3>Menu</h3>
+                <h3>{user ? `Hi, ${user.name}` : "Menu"}</h3>
                 <button className="close-menu" onClick={closeMenu}>×</button>
               </div>
               
@@ -403,29 +463,47 @@ const Navbar = () => {
                 >
                   Contact
                 </Link>
-<div className="mobile-auth-section">
-  <div className="auth-buttons-minimal">
-    <button 
-      className="auth-minimal-btn auth-minimal-login btn-submit"
-      onClick={openLoginModal}
-    >
-      <span className="auth-minimal-text">Log in</span>
-      <span className="auth-minimal-arrow">→</span>
-    </button>
-    
-    <div className="auth-divider">
-      <span>or</span>
-    </div>
-    
-    <button 
-      className="auth-minimal-btn auth-minimal-signup btn-clear"
-      onClick={openSignupModal}
-    >
-      <span className="auth-minimal-text">Sign up</span>
-      <span className="auth-minimal-plus">+</span>
-    </button>
-  </div>
-</div>
+
+                {/* Mobile Auth Section */}
+                <div className="mobile-auth-section">
+                  {user ? (
+                     // Mobile Logged In View
+                    <div className="auth-buttons-minimal">
+                      <button 
+                        className="auth-minimal-btn auth-minimal-signup btn-clear"
+                        onClick={handleLogout}
+                        style={{ width: '100%', justifyContent: 'center' }}
+                      >
+                        <span className="auth-minimal-text">Log Out</span>
+                        <span className="auth-minimal-arrow">←</span>
+                      </button>
+                    </div>
+                  ) : (
+                    // Mobile Guest View
+                    <div className="auth-buttons-minimal">
+                      <button 
+                        className="auth-minimal-btn auth-minimal-login btn-submit"
+                        onClick={openLoginModal}
+                      >
+                        <span className="auth-minimal-text">Log in</span>
+                        <span className="auth-minimal-arrow">→</span>
+                      </button>
+                      
+                      <div className="auth-divider">
+                        <span>or</span>
+                      </div>
+                      
+                      <button 
+                        className="auth-minimal-btn auth-minimal-signup btn-clear"
+                        onClick={openSignupModal}
+                      >
+                        <span className="auth-minimal-text">Sign up</span>
+                        <span className="auth-minimal-plus">+</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
               </div>
             </motion.div>
           </>
@@ -443,7 +521,10 @@ const Navbar = () => {
         onClose={() => setIsSignupModalOpen(false)}
         switchToLogin={switchToLoginModal}
       />
+      {/* This div uses the state variable 'navbarHeight' to set its height in pixels */}
+      <div style={{ height: "85px", width: '100%' }}></div>
     </>
+
   );
 };
 

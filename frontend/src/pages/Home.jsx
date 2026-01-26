@@ -303,6 +303,8 @@ const Home = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    
     console.log('Booking inquiry:', bookingForm);
     alert('Thank you for your inquiry! We will contact you soon.');
     setBookingForm({
@@ -1566,6 +1568,7 @@ const Home = () => {
                         <option value="deluxe">🏔️ Mountain View Deluxe</option>
                         <option value="family">👨‍👩‍👧‍👦 Family Suite</option>
                         <option value="cottage">🏡 Traditional Cottage</option>
+                        <option value="Budget">💰 Budget Rooms</option>
                       </select>
                     </div>
                   </div>
@@ -1594,6 +1597,7 @@ const Home = () => {
                 <motion.button
                   type="submit"
                   className="submit-btn"
+                  
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
