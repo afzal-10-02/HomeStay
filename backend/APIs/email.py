@@ -1,11 +1,16 @@
+import os
+from dotenv import load_dotenv
 from flask import current_app as app, request, jsonify
 from flask_mail import Mail, Message
 from datetime import datetime
 
+load_dotenv()
 mail = Mail(app)
 
 # SECURITY NOTE: Ideally, store this in a .env file and use os.getenv('OWNER_EMAIL')
-OWNER_EMAIL = "afzal.22it1602@gmail.com"
+OWNER_EMAIL = os.getenv("OWNER_EMAIL")
+
+
 
 # --- CONTACT FORM HTML ---
 def create_email_html(data):

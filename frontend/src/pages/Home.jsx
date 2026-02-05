@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
+import SearchForm from "../components/SearchForm";
 import { testimonials } from "../data/roomsData";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, EffectCoverflow } from "swiper/modules";
@@ -489,6 +490,7 @@ const Home = () => {
     >
       {/* Hero Section */}
       <Hero />
+      <SearchForm />
 
       {/* About Preview Section */}
     <div className="about-section home-about">
@@ -614,23 +616,6 @@ const Home = () => {
         transition={{ duration: 0.6, delay: 0.3 }}
         viewport={{ once: true }}
       >
-        <div className="testimonial-content">
-          <i className="fas fa-quote-left quote-icon"></i>
-          <p className="testimonial-text">
-            "The most authentic Himalayan experience we've ever had. The hospitality was incredible!"
-          </p>
-          <div className="testimonial-author">
-            <img 
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" 
-              alt="Guest" 
-              className="author-avatar"
-            />
-            <div className="author-info">
-              <h4>Rahul Sharma</h4>
-              <span>From Delhi</span>
-            </div>
-          </div>
-        </div>
       </motion.div>
     </motion.div>
   </div>

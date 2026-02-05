@@ -1,22 +1,49 @@
 /* Professional CSS Variables */
 :root {
-  --primary-color: #1a3b4a;
-  --secondary-color: rgb(26 59 74 / 49%);
-  --accent-color: #f093fb;
-  --text-color: #2c3e50;
-  --text-secondary: #6c757d;
-  --light-bg: #f8f9fa;
-  --dark-bg: #1a1a1a;
+  /* Deep Forest Green */
+  --primary-color: #2d6a4f;
+  --secondary-color: rgba(45, 106, 79, 0.15);
+  
+  /* Warm Earthy Gold */
+  --accent-color: #d4a373;
+  
+  /* Neutrals */
+  --text-color: #1b4332;
+  --text-secondary: #52b788;
+  --light-bg: #f1f8f5; /* Very subtle mint tint */
+  --dark-bg: #081c15;
   --white: #ffffff;
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
-  --border-radius: 15px;
-  --border-radius-lg: 25px;
+
+  /* Shadows */
+  --shadow: 0 8px 32px rgba(45, 106, 79, 0.1);
+  --shadow-lg: 0 20px 40px rgba(45, 106, 79, 0.15);
+
+  /* Structure */
+  --border-radius: 16px;
+  --border-radius-lg: 24px;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #40916c 0%, #1b4332 100%);
+  --gradient-secondary: linear-gradient(135deg, #d4a373 0%, #e9c46a 100%);
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.3);
+}
+
+
+
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* Prevents horizontal scroll if a child element is too wide */
 }
 
 /* Top Bar Styles */
@@ -196,15 +223,6 @@ body {
   position: relative;
 }
 
-/* .dropdown-toggle {
-  cursor: pointer;
-  background: none;
-  border: none;
-  color: var(--text-color);
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: 500;
-} */
 
 .dropdown-menu {
   position: absolute;
@@ -7099,19 +7117,15 @@ input, select, textarea {
   object-fit: cover;
 }
 
-.destination-content {
-  padding: 25px;
-}
+
 
 .destination-content h3 {
-  color: #2c3e50;
-  margin-bottom: 15px;
+  color: black;
   font-size: 1.5rem;
 }
 
 .destination-content p {
-  color: #555;
-  margin-bottom: 20px;
+  color: #555555;
   line-height: 1.6;
 }
 
@@ -12874,3 +12888,4 @@ transform:translateY(-3px);
   border: 1px solid #ccc;
   border-radius: 6px;
 }
+

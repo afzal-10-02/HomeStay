@@ -8,7 +8,6 @@ from werkzeug.security import generate_password_hash
 from flask_cors import CORS
 
 
-
 app = None
 
 

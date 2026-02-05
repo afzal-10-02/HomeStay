@@ -229,28 +229,44 @@ const Navbar = () => {
                         <h6>Sikkim Regions</h6>
                         <button
                           className={`menu-item ${activeRegion === "North Sikkim" ? "active" : ""}`}
-                          onClick={() => setActiveRegion("North Sikkim")}
+                          onClick={() => {
+                            setActiveRegion("North Sikkim");
+                            navigate("/homestay/north");
+                            closeMenu();
+                          }}    
                           onMouseEnter={() => setActiveRegion("North Sikkim")}
                         >
                           North Sikkim →
                         </button>
                         <button
                           className={`menu-item ${activeRegion === "East Sikkim" ? "active" : ""}`}
-                          onClick={() => setActiveRegion("East Sikkim")}
+                          onClick={() => {
+                            setActiveRegion("East Sikkim");
+                            navigate("/homestay/east");
+                            closeMenu();
+                          }}
                           onMouseEnter={() => setActiveRegion("East Sikkim")}
                         >
                           East Sikkim →
                         </button>
                         <button
                           className={`menu-item ${activeRegion === "West Sikkim" ? "active" : ""}`}
-                          onClick={() => setActiveRegion("West Sikkim")}
+                          onClick={() => {
+                            setActiveRegion("West Sikkim");
+                            navigate("/homestay/west");
+                            closeMenu();
+                          }}
                           onMouseEnter={() => setActiveRegion("West Sikkim")}
                         >
                           West Sikkim →
                         </button>
                         <button
                           className={`menu-item ${activeRegion === "South Sikkim" ? "active" : ""}`}
-                          onClick={() => setActiveRegion("South Sikkim")}
+                          onClick={() => {
+                            setActiveRegion("South Sikkim");
+                            navigate("/homestay/south");
+                            closeMenu();
+                          }}
                           onMouseEnter={() => setActiveRegion("South Sikkim")}
                         >
                           South Sikkim →
