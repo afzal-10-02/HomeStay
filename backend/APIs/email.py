@@ -8,7 +8,8 @@ load_dotenv()
 mail = Mail(app)
 
 # SECURITY NOTE: Ideally, store this in a .env file and use os.getenv('OWNER_EMAIL')
-OWNER_EMAIL = os.getenv("OWNER_EMAIL")
+OWNER_EMAIL = os.environ.get("OWNER_EMAIL")
+
 
 
 
@@ -268,7 +269,7 @@ def booking_room():
         print("Received Booking Data:", data)  # Debugging log
 
         # 1. Validation
-        required_fields = ['name', 'email', 'phone', 'checkIn', 'checkOut', 'guests', 'room_type']
+        required_fields = ['name', 'email', 'phone', 'checkIn', 'checkOut', 'guests', 'roomType']
         missing_fields = [field for field in required_fields if not data.get(field)]
 
         if missing_fields:
@@ -286,7 +287,7 @@ def booking_room():
         # 3. Create Message
         # We use the room type in the subject line for quick glancability
         msg = Message(
-            subject=f"Inquiry: {data.get('name')} - {data.get('room_type').title()}",
+            subject=f"Inquiry: {data.get('name')} - {data.get('room_type')}",
             recipients=[OWNER_EMAIL],
             html=create_booking_html_room(data),
             sender = OWNER_EMAIL
