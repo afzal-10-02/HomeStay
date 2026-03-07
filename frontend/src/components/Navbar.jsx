@@ -401,12 +401,12 @@ const Navbar = () => {
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.2 }}
                         >
-                          <Link to="/deluxe" onClick={closeMenu}>Deluxe Room</Link>
-                          <Link to="/family" onClick={closeMenu}>Family Suite</Link>
-                          <Link to="/cottage" onClick={closeMenu}>Traditional Cottage</Link>
-                          <Link to="/budget" onClick={closeMenu}>Budget Room</Link>
-                          <Link to="/mountain" onClick={closeMenu}>Mountain View Room</Link>
-                          <Link to="/farm" onClick={closeMenu}>Farm Stay Room</Link>
+                          <Link to="/room/deluxe" onClick={closeMenu}>Deluxe Room</Link>
+                          <Link to="/room/family" onClick={closeMenu}>Family Suite</Link>
+                          <Link to="/room/cottage" onClick={closeMenu}>Traditional Cottage</Link>
+                          <Link to="/room/budget" onClick={closeMenu}>Budget Room</Link>
+                          <Link to="/room/mountain" onClick={closeMenu}>Mountain View Room</Link>
+                          <Link to="/room/farm" onClick={closeMenu}>Farm Stay Room</Link>
                         </motion.div>
                       )}
                     </AnimatePresence>
