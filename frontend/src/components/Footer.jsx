@@ -101,10 +101,10 @@ const Footer = () => {
           <div className="footer-section">
             <h4>Our Rooms</h4>
             <ul>
-              <li><Link to="/deluxe">Deluxe Room</Link></li>
-              <li><Link to="/family">Family Suite</Link></li>
-              <li><Link to="/cottage">Traditional Cottage</Link></li>
-              <li><Link to="/cottage">Budget Room</Link></li>
+              <li><Link to="/room/deluxe">Deluxe Room</Link></li>
+              <li><Link to="/room/family">Family Suite</Link></li>
+              <li><Link to="/room/cottage">Traditional Cottage</Link></li>
+              <li><Link to="/room/budget">Budget Room</Link></li>
             </ul>
           </div>
 
