@@ -1,119 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { galleryImages, galleryCategories } from '../data/destinationsData';
 
 const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedImage, setSelectedImage] = useState(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-
-  const galleryImages = [
-    {
-      id: 1,
-      src: "/assets/gallery/Mountainview.avif",
-      alt: "Mountain View Room",
-      category: "rooms",
-      title: "Mountain View Suite",
-      description: "Panoramic Himalayan views from private balcony"
-    },
-    {
-      id: 2,
-      src: "/assets/gallery/traditionalcottage.jpg",
-      alt: "Traditional Cottage",
-      category: "rooms",
-      title: "Traditional Sikkimese Cottage",
-      description: "Authentic local architecture with modern comforts"
-    },
-    {
-      id: 3,
-      src: "/assets/gallery/diningarea.jpg",
-      alt: "Dining Area",
-      category: "dining",
-      title: "Cozy Dining Area",
-      description: "Enjoy local cuisine in warm ambiance"
-    },
-    {
-      id: 4,
-      src: "/assets/gallery/serenegarden.avif",
-      alt: "Garden View",
-      category: "garden",
-      title: "Serene Garden",
-      description: "Peaceful garden with seasonal flowers"
-    },
-    {
-      id: 5,
-      src: "/assets/gallery/himalaya.jpeg",
-      alt: "Himalayan View",
-      category: "views",
-      title: "Sunrise Over Himalayas",
-      description: "Breathtaking morning views"
-    },
-    {
-      id: 6,
-      src: "/assets/gallery/traditional-sikkimese.jpg",
-      alt: "Interior Design",
-      category: "interior",
-      title: "Traditional Interior",
-      description: "Handcrafted wooden furniture"
-    },
-    {
-      id: 7,
-      src: "/assets/gallery/lounge.jpg",
-      alt: "Common Area",
-      category: "common",
-      title: "Lounge Area",
-      description: "Cozy fireplace lounge"
-    },
-    {
-      id: 8,
-      src: "/assets/gallery/outdoor-seating.jpg",
-      alt: "Outdoor Seating",
-      category: "garden",
-      title: "Outdoor Seating",
-      description: "Relax in nature's lap"
-    },
-    {
-      id: 9,
-      src: "/assets/gallery/modern-bathroom.avif",
-      alt: "Bathroom",
-      category: "rooms",
-      title: "Modern Bathroom",
-      description: "Clean and spacious facilities"
-    },
-    {
-      id: 10,
-      src: "/assets/gallery/cultural-artifact.jpg",
-      alt: "Cultural Decor",
-      category: "interior",
-      title: "Cultural Artifacts",
-      description: "Local art and craftsmanship"
-    },
-    {
-      id: 11,
-      src: "/assets/gallery/stary-night.webp",
-      alt: "Night View",
-      category: "views",
-      title: "Starry Night",
-      description: "Clear Himalayan night sky"
-    },
-    {
-      id: 12,
-      src: "/assets/gallery/morning-breakfast.jpg",
-      alt: "Breakfast Setup",
-      category: "dining",
-      title: "Morning Breakfast",
-      description: "Fresh local produce"
-    }
-  ];
-
-  const categories = [
-    { id: 'all', name: 'All Photos', icon: 'fa-images', count: galleryImages.length },
-    { id: 'rooms', name: 'Rooms', icon: 'fa-bed', count: galleryImages.filter(img => img.category === 'rooms').length },
-    { id: 'views', name: 'Views', icon: 'fa-mountain', count: galleryImages.filter(img => img.category === 'views').length },
-    { id: 'garden', name: 'Garden', icon: 'fa-tree', count: galleryImages.filter(img => img.category === 'garden').length },
-    { id: 'dining', name: 'Dining', icon: 'fa-utensils', count: galleryImages.filter(img => img.category === 'dining').length },
-    { id: 'interior', name: 'Interior', icon: 'fa-home', count: galleryImages.filter(img => img.category === 'interior').length },
-    { id: 'common', name: 'Common Areas', icon: 'fa-couch', count: galleryImages.filter(img => img.category === 'common').length }
-  ];
 
   const filteredImages = selectedCategory === 'all' 
     ? galleryImages 
@@ -169,6 +61,7 @@ const Gallery = () => {
   return (
     <motion.section
       className="gallery-section"
+      style={{ paddingTop: "115px" }}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -182,12 +75,12 @@ const Gallery = () => {
 
         {/* Gallery Section */}
         <div className="gallery-main">
-          {/* Category Filter */}
+          {/* Category Filter - FIXED: Changed from 'categories' to 'galleryCategories' */}
           <motion.div 
             className="gallery-filters"
             variants={itemVariants}
           >
-            {categories.map((category, index) => (
+            {galleryCategories.map((category, index) => (
               <motion.button
                 key={category.id}
                 className={`filter-btn ${selectedCategory === category.id ? 'active' : ''}`}
@@ -265,7 +158,7 @@ const Gallery = () => {
             variants={itemVariants}
           >
             <motion.button
-              className="view-more-btn btn btn-primary"
+              className="btn btn-dark btn-lg rounded-3 px-4 py-2 about-btn w-25"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -285,7 +178,21 @@ const Gallery = () => {
             onClick={closeLightbox}
           >
             <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-              <button className="close-btn" onClick={closeLightbox}>×</button>
+                <button
+  className="position-absolute top-0 end-0 mt-4 me-4 md:mt-6 md:me-6 z-3 p-1 rounded-pill text-white d-flex align-items-center justify-content-center shadow-lg transition-all"
+  style={{ 
+    width: '36px', 
+    height: '36px',
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    backgroundColor: '#1a4d42',
+    border: 'none'
+  }}
+  onClick={closeLightbox}
+  aria-label="Close lightbox"
+>
+  ×
+</button>
               
               <div className="lightbox-image-container">
                 <img src={selectedImage.src} alt={selectedImage.alt} />
@@ -315,16 +222,6 @@ const Gallery = () => {
             </div>
           </motion.div>
         )}
-
-        {/* Call to Action */}
-        <motion.div className="gallery-cta" variants={itemVariants}>
-          <h2>Experience Sikkim Yourself</h2>
-          <p>Book your stay and create your own memories in the Himalayas</p>
-          <div className="cta-buttons">
-            <a href="/rooms" className="btn-primary">View Rooms</a>
-            <a href="/contact" className="btn-secondary">Book Now</a>
-          </div>
-        </motion.div>
       </div>
     </motion.section>
   );

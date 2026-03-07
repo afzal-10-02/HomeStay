@@ -7,35 +7,48 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
   const [subscribeMessage, setSubscribeMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // ← Added this
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    
-    if (!email) {
+
+    // Basic validation
+    if (!email.trim()) {
       setSubscribeMessage('Please enter your email address');
       return;
     }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setSubscribeMessage('Please enter a valid email address');
+      return;
+    }
 
+    setIsSubmitting(true);
     setSubscribeMessage('Subscribing...');
-    
+
     try {
-      // Replace with your actual subscription endpoint
-      const response = await fetch('https://your-api-endpoint.com/subscribe', {
+      // Replace with your actual API endpoint
+      const response = await fetch('http://localhost:5000/api/subscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.trim() }),
       });
 
       if (response.ok) {
-        setSubscribeMessage('Thank you for subscribing!');
+        setSubscribeMessage('Thank you for subscribing! 🎉');
         setEmail('');
       } else {
         setSubscribeMessage('Subscription failed. Please try again.');
       }
     } catch (error) {
-      setSubscribeMessage('An error occurred. Please try again later.');
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        setSubscribeMessage("Connection failed. Please ensure the server is running.");
+      } else {
+        setSubscribeMessage('An error occurred. Please try again later.');
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -60,42 +73,18 @@ const Footer = () => {
               Your perfect base for exploring the natural beauty and rich culture of Sikkim.
             </p>
             <div className="social-links">
-              <motion.a
-                href="#"
-                aria-label="Facebook"
-                className="social-link"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <a href="#" className="social-link facebook" aria-label="Facebook">
                 <i className="fab fa-facebook-f"></i>
-              </motion.a>
-              <motion.a
-                href="#"
-                aria-label="Instagram"
-                className="social-link"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              </a>
+              <a href="#" className="social-link instagram" aria-label="Instagram">
                 <i className="fab fa-instagram"></i>
-              </motion.a>
-              <motion.a
-                href="#"
-                aria-label="Twitter"
-                className="social-link"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              </a>
+              <a href="#" className="social-link twitter" aria-label="Twitter">
                 <i className="fab fa-twitter"></i>
-              </motion.a>
-              <motion.a
-                href="#"
-                aria-label="YouTube"
-                className="social-link"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              </a>
+              <a href="#" className="social-link youtube" aria-label="YouTube">
                 <i className="fab fa-youtube"></i>
-              </motion.a>
+              </a>
             </div>
           </div>
 
@@ -124,36 +113,65 @@ const Footer = () => {
             <p className="text-variant-2">
               Get updates, travel tips, and exclusive offers from Sikkim Homestay.
             </p>
-            <form className="mt-12 subscribe-form" onSubmit={handleSubscribe}>
-              <div className="subscribe-content">
-                <div className="input-group">
-                  <span className="icon-left icon-mail">
-                    <i className="fas fa-envelope"></i>
-                  </span>
-                  <input
-                    type="email"
-                    name="email-form"
-                    id="subscribe-email"
-                    placeholder="Your email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="button-subscribe"
-                    aria-label="Subscribe with Us"
-                  >
-                    <i className="icon icon-send"></i>
-                  </button>
-                </div>
-                {subscribeMessage && (
-                  <div id="subscribe-msg" className="subscribe-message">
-                    {subscribeMessage}
-                  </div>
-                )}
+
+            {/* ── Updated Subscribe Form ── */}
+            <motion.form
+              className="subscribe-form mt-4"
+              onSubmit={handleSubscribe}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <div className="input-group input-group-lg rounded-pill overflow-hidden shadow-sm">
+                <span className="input-group-text bg-white border-0 ps-4">
+                  <i className="fas fa-envelope text-success fs-5"></i>
+                </span>
+
+                <input
+                  type="email"
+                  className="form-control border-0 px-3 py-3 fs-5"
+                  placeholder="Your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                  disabled={isSubmitting}
+                />
+
+                <button
+                  type="submit"
+                  className="btn btn-success px-4 fw-bold rounded-0"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <i className="fas fa-spinner fa-spin me-2"></i>
+                      Subscribing...
+                    </>
+                  ) : (
+                    <i className="fas fa-paper-plane"></i>
+                  )}
+                </button>
               </div>
-            </form>
+
+              {subscribeMessage && (
+                <motion.div
+                  className={`alert mt-3 text-center fw-medium rounded-3 ${
+                    subscribeMessage.includes('Thank') || 
+                    subscribeMessage.includes('success') ||
+                    subscribeMessage.includes('subscribed')
+                      ? 'alert-success'
+                      : 'alert-danger'
+                  }`}
+                  role="alert"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {subscribeMessage}
+                </motion.div>
+              )}
+            </motion.form>
           </div>
         </div>
 

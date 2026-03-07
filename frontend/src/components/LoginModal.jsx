@@ -4,27 +4,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Define API Endpoint (Replace with your actual backend URL)
+  
   const API_URL = 'http://localhost:5000/login';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    // Clear specific error when user starts typing
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Clear error when user types
     if (errors[name] || errors.general) {
-      setErrors(prev => {
+      setErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors[name];
-        delete newErrors.general; // Clear general API errors on retry
+        delete newErrors.general;
         return newErrors;
       });
     }
@@ -33,16 +31,14 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.email) {
+    if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = 'Please enter a valid email';
     }
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
     }
 
     return newErrors;
@@ -58,56 +54,47 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
     }
 
     setIsSubmitting(true);
-    setErrors({}); // Clear previous errors
+    setErrors({});
 
     try {
-      // 1. Call the Backend
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: formData.email,
-          password: formData.password
+          password: formData.password,
         }),
       });
 
       const data = await response.json();
 
-      // 2. Handle Backend Errors
       if (!response.ok) {
         throw new Error(data.message || 'Invalid email or password');
       }
 
-      console.log('Login successful:', data);
-
-      // 3. Store the Token
-      // Adjust 'token' to match your backend response key (e.g., access_token, jwt)
+      // Success
       if (data.access_token) {
         localStorage.setItem('authToken', data.access_token);
-        // Optional: Store user data if needed
-        // localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem("isLoggedIn", "True");
-        localStorage.setItem("username", data.user_name);
-
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', data.user_name || 'User');
       }
 
-      // 4. Success Actions
       alert('Login successful!');
       setFormData({ email: '', password: '' });
       onClose();
 
-      // Optional: Force a page reload or trigger a global state update to update the UI
-      // window.location.reload(); 
+      // Optional: reload or redirect
+      // window.location.href = '/dashboard';
 
-    } catch (error) {
-      console.error('Login error:', error);
-      // Set a general error to be displayed at the top of the form
-      setErrors(prev => ({
-        ...prev,
-        general: error.message || 'Something went wrong. Please try again.'
-      }));
+    } catch (err) {
+      // Provide a more helpful error message for network errors
+      if (err instanceof TypeError && err.message === 'Failed to fetch') {
+        setErrors({
+          general: "Connection failed. Please ensure the backend server is running.",
+        });
+      } else {
+        setErrors({ general: err.message || 'Login failed. Please try again.' });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -118,155 +105,165 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
     switchToSignup();
   };
 
+  // Framer Motion variants
   const modalVariants = {
-    hidden: { opacity: 0, scale: 0.9, y: 30 },
+    hidden: { opacity: 0, scale: 0.85, y: 40 },
     visible: {
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut",
-        staggerChildren: 0.12,
-      },
+      transition: { duration: 0.4, ease: 'easeOut' },
     },
-    exit: { opacity: 0, scale: 0.9, y: 30 },
+    exit: { opacity: 0, scale: 0.85, y: 40 },
   };
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="modal-overlay"
+          className="modal fade show d-block"
+          style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="modal-content login-modal"
+            className="modal-dialog modal-dialog-centered modal-md"
             variants={modalVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="modal-header">
-              <h2>Login to Your Account</h2>
-              <button className="close-btn" onClick={onClose} aria-label="Close">
-                ×
-              </button>
-            </div>
+            <div className="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+              {/* Header */}
+              <div className="modal-header border-0 pb-0 pt-4 px-4">
+                <h2 className="modal-title fs-3 fw-bold text-dark">Welcome Back</h2>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={onClose}
+                  aria-label="Close"
+                ></button>
+              </div>
 
-            <div className="modal-body">
-              <form onSubmit={handleSubmit} className="auth-form" noValidate>
-
-                {/* --- NEW: General API Error Display --- */}
+              {/* Body */}
+              <div className="modal-body px-4 pb-4">
                 {errors.general && (
-                  <motion.div
-                    className="error-alert"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    style={{
-                      background: '#fee2e2',
-                      color: '#dc2626',
-                      padding: '10px',
-                      borderRadius: '6px',
-                      fontSize: '0.9rem',
-                      marginBottom: '15px',
-                      border: '1px solid #fecaca'
-                    }}
-                  >
+                  <div className="alert alert-danger alert-dismissible fade show mb-4" role="alert">
                     {errors.general}
-                  </motion.div>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      onClick={() => setErrors({})}
+                    ></button>
+                  </div>
                 )}
 
-                <div className="form-group">
-                  <div className="input-with-icon">
-                    <svg className="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="#666" />
-                    </svg>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      placeholder="Email Address"
-                      className={errors.email ? 'error' : ''}
-                      disabled={isSubmitting}
-                    />
+                <form onSubmit={handleSubmit} noValidate>
+                  {/* Email */}
+                  <div className=" position-relative">
+                    <label htmlFor="email" className="form-label fw-medium text-muted">
+                      Email address
+                    </label>
+                    <div className="input-group input-group-lg">
+                      <span className="input-group-text bg-white border-end-0">
+                        <i className="bi bi-envelope-fill text-muted"></i>
+                      </span>
+                      <input
+                        type="email"
+                        className={`form-control form-control-lg border-start-0 ${errors.email ? 'is-invalid' : ''}`}
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="name@example.com"
+                        disabled={isSubmitting}
+                        required
+                      />
+                      {errors.email && (
+                        <div className="invalid-feedback">{errors.email}</div>
+                      )}
+                    </div>
                   </div>
-                  {errors.email && <span className="error-message">{errors.email}</span>}
-                </div>
 
-                <div className="form-group">
-                  <div className="input-with-icon">
-                    <svg className="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM15.1 8H8.9V6C8.9 4.29 10.29 2.9 12 2.9C13.71 2.9 15.1 4.29 15.1 6V8Z" fill="#666" />
-                    </svg>
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                      placeholder="Password"
-                      className={errors.password ? 'error' : ''}
-                      disabled={isSubmitting}
-                      minLength={6}
-                    />
+                  {/* Password */}
+                  <div className="mb-4 position-relative">
+                    <label htmlFor="password" className="form-label fw-medium text-muted">
+                      Password
+                    </label>
+                    <div className="input-group input-group-lg">
+                      <span className="input-group-text bg-white border-end-0">
+                        <i className="bi bi-lock-fill text-muted"></i>
+                      </span>
+                      <input
+                        type="password"
+                        className={`form-control form-control-lg border-start-0 ${errors.password ? 'is-invalid' : ''}`}
+                        id="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="••••••••"
+                        minLength={6}
+                        disabled={isSubmitting}
+                        required
+                      />
+                      {errors.password && (
+                        <div className="invalid-feedback">{errors.password}</div>
+                      )}
+                    </div>
                   </div>
-                  {errors.password && <span className="error-message">{errors.password}</span>}
-                </div>
 
+                  {/* Options */}
+                  <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="rememberMe"
+                      />
+                      <label className="form-check-label text-muted" htmlFor="rememberMe">
+                        Remember me
+                      </label>
+                    </div>
 
+                    <a href="#" className="text-decoration-none small fw-medium text-primary">
+                      Forgot password?
+                    </a>
+                  </div>
 
-                <div className="form-options ">
-                  <label className="checkbox-label">
-                    <input type="checkbox" />
-                    <span>Remember me</span>
-                  </label>
-
-                  <button type="button" className="forgot-password">
-                    Forgot Password?
-                  </button>
-                </div>
-
-
-
-                <button
-                  type="submit"
-                  className="btn-primary auth-submit btn btn-primary"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <span className="spinner"></span>
-                      Logging in...
-                    </>
-                  ) : (
-                    'Login'
-                  )}
-                </button>
-                {/* Social Login Buttons (Same as before) */}
-
-              </form>
-
-              <div className="auth-switch">
-                <p>
-                  Don't have an account?{' '}
+                  {/* Submit Button */}
                   <button
-                    type="button"
-                    className="link-btn"
-                    onClick={handleSwitchToSignup}
+                    type="submit"
+                    className="pill-btn theme w-100"
                     disabled={isSubmitting}
                   >
-                    Sign Up
+                    {isSubmitting ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Logging in...
+                      </>
+                    ) : (
+                      'Log in'
+                    )}
                   </button>
-                </p>
+                </form>
+
+                {/* Switch to Signup */}
+                <div className="text-center mt-4">
+                  <p className="text-muted mb-0">
+                    Don't have an account?{' '}
+                    <button
+                      type="button"
+                      className="btn btn-link text-primary fw-semibold p-0 align-baseline"
+                      onClick={handleSwitchToSignup}
+                      disabled={isSubmitting}
+                    >
+                      Sign in
+                    </button>
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>

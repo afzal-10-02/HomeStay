@@ -86,12 +86,21 @@ const BookingForm = ({ homestayName, homestayId, onClose }) => {
       }, 2000);
 
     } catch (error) {
-      console.error('Booking Error:', error);
-      setStatus({
-        loading: false,
-        message: error.message || 'Something went wrong. Please try again.',
-        type: 'error'
-      });
+      console.error('Booking Error:', error); // Keep for debugging
+      // Provide a more helpful error message for network errors
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        setStatus({
+          loading: false,
+          message: 'Connection failed. Please ensure the backend server is running.',
+          type: 'error'
+        });
+      } else {
+        setStatus({
+          loading: false,
+          message: error.message || 'Something went wrong. Please try again.',
+          type: 'error'
+        });
+      }
     }
   };
 

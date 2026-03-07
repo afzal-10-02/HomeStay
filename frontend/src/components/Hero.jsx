@@ -1,17 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
-  const [searchData, setSearchData] = useState({
-    location: 'Sikkim',
-    homestayType: 'Any Homestay',
-    checkIn: '',
-    checkOut: '',
-    guests: '2',
-    roomType: 'Any Room'
-  });
+  const navigate = useNavigate(); // ✅ REQUIRED
 
-  const [focusedField, setFocusedField] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -19,10 +12,10 @@ const Hero = () => {
   const carouselImages = [
     "/assets/homestay/changu.jpeg",
     "/assets/gallery/slider1.webp",
-    "/assets/gallery/slider2.webp"
+    "/assets/gallery/slider2.webp",
   ];
 
-  // Auto slide functionality
+  // Auto slide
   useEffect(() => {
     let interval;
     if (isAutoPlaying) {
@@ -33,38 +26,6 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, [isAutoPlaying, carouselImages.length]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    console.log('Search data:', searchData);
-    alert(`Searching ${searchData.homestayType} in ${searchData.location} for ${searchData.guests} guests in ${searchData.roomType}`);
-  };
-
-  const handleInputChange = (field, value) => {
-    setSearchData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleFocus = (field) => {
-    setFocusedField(field);
-  };
-
-  const handleBlur = () => {
-    setFocusedField(null);
-  };
-
-  // Calculate tomorrow's date
-  const getTomorrowDate = () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0];
-  };
-
-  // Calculate day after tomorrow
-  const getDayAfterTomorrow = () => {
-    const dayAfter = new Date();
-    dayAfter.setDate(dayAfter.getDate() + 2);
-    return dayAfter.toISOString().split('T')[0];
-  };
-
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
     setIsAutoPlaying(false);
@@ -72,7 +33,9 @@ const Hero = () => {
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+    setCurrentSlide(
+      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
+    );
     setIsAutoPlaying(false);
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
@@ -83,50 +46,11 @@ const Hero = () => {
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
-  const locations = [
-    { value: 'Sikkim', label: 'Sikkim', icon: '🏔️' },
-    { value: 'Gangtok', label: 'Gangtok', icon: '🌇' },
-    { value: 'Pelling', label: 'Pelling', icon: '🌄' },
-    { value: 'Lachung', label: 'Lachung', icon: '❄️' },
-    { value: 'Lachen', label: 'Lachen', icon: '🏞️' },
-    { value: 'Namchi', label: 'Namchi', icon: '🙏' },
-    { value: 'Ravangla', label: 'Ravangla', icon: '🌿' },
-    { value: 'Yuksom', label: 'Yuksom', icon: '👑' }
-  ];
-
-  const homestayTypes = [
-    { value: 'Any Homestay', label: 'Any Homestay', icon: '🏠' },
-    { value: 'Family Homestay', label: 'Family Homestay', icon: '👨‍👩‍👧‍👦' },
-    { value: 'Luxury Homestay', label: 'Luxury Homestay', icon: '✨' },
-    { value: 'Eco Homestay', label: 'Eco Homestay', icon: '🌱' },
-    { value: 'Traditional Homestay', label: 'Traditional Homestay', icon: '🏡' },
-    { value: 'Farm Homestay', label: 'Farm Homestay', icon: '🚜' },
-    { value: 'Mountain View Homestay', label: 'Mountain View', icon: '⛰️' }
-  ];
-
-  const roomTypes = [
-    { value: 'Any Room', label: 'Any Room', icon: '🛏️' },
-    { value: 'Deluxe Room', label: 'Deluxe Room', icon: '✨' },
-    { value: 'Family Suite', label: 'Family Suite', icon: '👨‍👩‍👧‍👦' },
-    { value: 'Traditional Cottage', label: 'Traditional Cottage', icon: '🏡' },
-    { value: 'Budget Room', label: 'Budget Room', icon: '💰' },
-    { value: 'Luxury Villa', label: 'Luxury Villa', icon: '👑' },
-    { value: 'Honeymoon Suite', label: 'Honeymoon Suite', icon: '💖' }
-  ];
-
-  const guestOptions = [
-    { value: '1', label: '1 Guest' },
-    { value: '2', label: '2 Guests' },
-    { value: '3', label: '3 Guests' },
-    { value: '4', label: '4 Guests' },
-    { value: '5', label: '5+ Guests' }
-  ];
-
   return (
-    <motion.section 
-      className="hero" 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
+    <motion.section
+      className="hero"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
       {/* Carousel */}
@@ -140,12 +64,12 @@ const Hero = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
             style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url(${carouselImages[currentSlide]})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.7)), url(${carouselImages[currentSlide]})`,
             }}
           />
         </AnimatePresence>
 
-        {/* Carousel Navigation */}
+        {/* Controls */}
         <div className="carousel-controls">
           <button className="carousel-prev" onClick={prevSlide}>
             <i className="fas fa-chevron-left"></i>
@@ -155,73 +79,129 @@ const Hero = () => {
           </button>
         </div>
 
-        {/* Carousel Dots */}
+        {/* Dots */}
         <div className="carousel-dots">
           {carouselImages.map((_, index) => (
             <button
               key={index}
-              className={`carousel-dot ${index === currentSlide ? 'active' : ''}`}
+              className={`carousel-dot ${
+                index === currentSlide ? "active" : ""
+              }`}
               onClick={() => goToSlide(index)}
-              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
 
-        {/* Carousel Info */}
+        {/* Info */}
         <div className="carousel-info">
           <div className="slide-counter">
             <span className="current-slide">{currentSlide + 1}</span>
             <span className="total-slides"> / {carouselImages.length}</span>
           </div>
-          <button 
-            className="pause-btn" 
+          <button
+            className="pause-btn"
             onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-            aria-label={isAutoPlaying ? "Pause carousel" : "Play carousel"}
           >
-            <i className={`fas fa-${isAutoPlaying ? 'pause' : 'play'}`}></i>
+            <i className={`fas fa-${isAutoPlaying ? "pause" : "play"}`} />
           </button>
         </div>
       </div>
 
+      {/* Content */}
       <motion.div
-        className="hero-content"
+        className="hero-content p-0"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.8 }}
       >
         <div className="tags">
-          <span>🏡 Homestay</span>
-          <span>✨ Luxury</span>
-          <span>🌿 Nature</span>
-          <span>🏔️ Sikkim</span>
+          <span className="tag">🏡 Homestay</span>
+          <span className="tag">✨ Luxury</span>
+          <span className="tag">🌿 Nature</span>
+          <span className="tag">🏔️ Sikkim</span>
+          <span className="tag">⭐ 5-Star</span>
+          <span className="tag">❤️ Family Friendly</span>
         </div>
 
-        <motion.h1 
+        <motion.h1
           className="hero-title"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          Discover Your Perfect<br />
+          Discover Your Perfect <br />
           <span className="highlight">Sikkim Homestay</span> Experience
         </motion.h1>
 
-        <motion.p 
+        <motion.p
           className="hero-subtitle"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.8 }}
         >
-          Experience authentic Sikkimese hospitality in luxury homestays nestled in the Himalayas.
-          Book your serene getaway today.
+          Experience authentic Sikkimese hospitality in luxury homestays nestled
+          in the Himalayas.
         </motion.p>
 
-        
-      </motion.div>
-      
-  </motion.section>
+        {/* Stats */}
+        <motion.div
+          className="hero-stats"
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.9, duration: 0.8 }}
+        >
+          <div className="stat-item">
+            <div className="stat-number">50+</div>
+            <div className="stat-label">Happy Guests</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-number">4.9</div>
+            <div className="stat-label">Guest Rating</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-number">24/7</div>
+            <div className="stat-label">Support</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-number">100%</div>
+            <div className="stat-label">Satisfaction</div>
+          </div>
+        </motion.div>
 
-  
+        {/* CTA */}
+        <motion.div
+          className="hero-buttons pt-3 d-flex justify-content-center"
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.8 }}
+        >
+          <div className="btn-3d-wrapper">
+            <button
+              className="btn pill-btn-3d d-flex align-items-center gap-2 px-4 py-3"
+              onClick={() => navigate("/contact")}
+            >
+              <i className="fas fa-calendar-check"></i>
+              <span>Book Now</span>
+            </button>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="scroll-indicator"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          delay: 1.5,
+          duration: 1,
+          repeat: Infinity,
+          repeatType: "reverse",
+        }}
+      >
+        <i className="fas fa-chevron-down"></i>
+      </motion.div>
+    </motion.section>
   );
 };
 
