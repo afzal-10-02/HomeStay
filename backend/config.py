@@ -5,7 +5,7 @@ class localConfig:
     DEBUG = True
     SQLALCHEMY_DATABASE_URI= "sqlite:///homestay.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = "kndfo49rjoi3fnci4rnjfosa3940j3nf03984"
+    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
     
     MAIL_SERVER = "smtp-relay.brevo.com"
     MAIL_PORT =  587
