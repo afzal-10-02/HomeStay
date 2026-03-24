@@ -1,11 +1,6 @@
-﻿dotenv
-email-validator
-Flask
+﻿Flask
 flask-cors
 Flask-JWT-Extended
 Flask-Mail
 Flask-SQLAlchemy
-itsdangerous
-PyJWT
-python-dotenv
 SQLAlchemy
