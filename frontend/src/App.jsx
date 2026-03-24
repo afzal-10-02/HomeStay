@@ -33,6 +33,8 @@ import Rinchenpong from "./homestay/west/Rinchenpong";
 import Yuksom from "./homestay/west/Yuksom";
 
 import RoomDetailPage from "./pages/RoomDetailPage";
+import Experiences from "./pages/Experiences";
+import ExperienceDetail from "./pages/ExperienceDetail";
 
 // // Rooms
 // import Deluxe from "./rooms/DeluxeRoom";
@@ -64,7 +66,7 @@ function App() {
             <Route path="/farm" element={<Farm />} /> */}
 
             <Route path="/room/:slug" element={<RoomDetailPage />} />
-            
+
             {/* EAST */}
             <Route path="/homestay/eastsikkim" element={<EastSikkim />} />
             <Route path="/homestay/east/gangtok" element={<Gangtok />} />
@@ -87,6 +89,10 @@ function App() {
             <Route path="/homestay/west/pelling" element={<Pelling />} />
             <Route path="/homestay/west/rinchenpong" element={<Rinchenpong />} />
             <Route path="/homestay/west/yuksom" element={<Yuksom />} />
+
+            {/* Experiences Routes */}
+            <Route path="/experiences" element={<Experiences />} />
+            <Route path="/experience/:id" element={<ExperienceDetail />} />
           </Routes>
         </main>
         <Footer />

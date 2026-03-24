@@ -73,7 +73,7 @@ const About = () => {
       <div className="container">
         {/* Hero Section */}
         <section
-          className="hero-section"
+          className="py-5 hero-section"
           style={{
             background: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
             url(/assets/gallery/Breadcrumb.png)`,
@@ -132,7 +132,7 @@ const About = () => {
               <div className="col-lg-6">
                 <div className="position-relative about-image-wrapper">
                   <img
-                    src="/assets/gallery/Mountainview.avif"
+                    src="/assets/gallery/lounge.jpg"
                     alt="Sikkim landscape"
                     className="img-fluid rounded-5 shadow-lg main-image"
                   />
@@ -482,7 +482,7 @@ const About = () => {
       <div className="col-lg-6">
         <div className="mission-image text-center">
           <img
-            src="https://images.unsplash.com/photo-1544148103-0773bf10d330?w=500&h=300&fit=crop"
+            src="/assets/gallery/diningarea.jpg"
             alt="Sikkimese culture and hospitality"
             className="img-fluid rounded shadow"
           />
@@ -499,7 +499,7 @@ const About = () => {
       <div className="col-lg-6 mb-4 mb-lg-0">
         <div className="mission-image text-center">
           <img
-            src="https://images.unsplash.com/photo-1544148103-0773bf10d330?w=500&h=300&fit=crop"
+            src="assets/gallery/familyroom.jpg"
             alt="Sikkim Himalayan landscape"
             className="img-fluid rounded shadow"
           />

@@ -261,7 +261,7 @@ const Home = () => {
             <div className="col-lg-6">
               <div className="position-relative about-image-wrapper">
                 <img
-                  src="/assets/gallery/Mountainview.avif"
+                  src="/assets/gallery/lounge.jpg"
                   alt="Sikkim landscape"
                   className="img-fluid rounded-5 shadow-lg main-image"
                 />

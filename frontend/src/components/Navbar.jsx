@@ -144,7 +144,7 @@ const Navbar = () => {
             <div className="nav-logo-container">
               <Link to="/" className="nav-logo d-flex align-items-center" onClick={closeMenu}>
                 <img
-                  src = "assets/Logo.png"
+                  src="/assets/Logo.png"
                   alt="Heaven Homestay Logo"
                   className="logo-img py-0"
                   style={{ height: "50px", width: "auto" }}
@@ -236,7 +236,7 @@ const Navbar = () => {
                                     setActiveRegion(region);
                                     navigate(`/homestay/${region.replace(/\s+/g, '').toLowerCase()}`);
                                   }
-                                }
+                                  }
                                 >
                                   {region} →
                                 </button>
@@ -291,6 +291,10 @@ const Navbar = () => {
                     </AnimatePresence>
                   </div>
 
+                  <Link to="/experiences" className={`nav-link ${isActive("/experiences") ? "active" : ""}`}>
+                    Experiences
+                  </Link>
+
                   <Link to="/about" className={`nav-link ${isActive("/about") ? "active" : ""}`}>
                     About
                   </Link>
@@ -344,9 +348,7 @@ const Navbar = () => {
           </div>
         </Container>
       </motion.nav>
-      <div style={{style : "0px"}}>
 
-      </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -367,16 +369,18 @@ const Navbar = () => {
               exit={{ x: "100%" }}
               transition={{ type: "tween", duration: 0.3 }}
             >
-              <div className="mobile-menu-header d-flex justify-content-between align-items-center py-3 px-4">
-                <h3 className="mb-0">{user ? `Hi, ${user.name}` : "Menu"}</h3>
-                <button className="close-menu btn p-0" onClick={closeMenu}>×</button>
+              <div className="mobile-menu-header d-flex justify-content-between align-items-center py-3 px-4 border-bottom">
+                <Link to="/" onClick={closeMenu}>
+                  <img src="/assets/Logo.png" alt="Logo" style={{ height: '40px' }} />
+                </Link>
+                <button className="close-menu btn p-0 fs-1" onClick={closeMenu}>×</button>
               </div>
 
               <div className="mobile-menu-content px-4">
                 {/* Mobile Navigation Links */}
                 <div className="mobile-nav-links">
-                  <Link 
-                    to="/" 
+                  <Link
+                    to="/"
                     className={`mobile-nav-link ${isActive("/") ? "active" : ""}`}
                     onClick={closeMenu}
                   >
@@ -385,7 +389,7 @@ const Navbar = () => {
 
                   {/* Mobile Rooms Dropdown */}
                   <div className="mobile-dropdown">
-                    <button 
+                    <button
                       className="mobile-nav-link w-100 text-start bg-transparent border-0 d-flex justify-content-between align-items-center"
                       onClick={() => setMobileRoomsOpen(!mobileRoomsOpen)}
                     >
@@ -394,7 +398,7 @@ const Navbar = () => {
                     </button>
                     <AnimatePresence>
                       {mobileRoomsOpen && (
-                        <motion.div 
+                        <motion.div
                           className="mobile-dropdown-content ps-3"
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
@@ -414,7 +418,7 @@ const Navbar = () => {
 
                   {/* Mobile Homestays Dropdown */}
                   <div className="mobile-dropdown">
-                    <button 
+                    <button
                       className="mobile-nav-link w-100 text-start bg-transparent border-0 d-flex justify-content-between align-items-center"
                       onClick={() => setMobileHomestayOpen(!mobileHomestayOpen)}
                     >
@@ -423,7 +427,7 @@ const Navbar = () => {
                     </button>
                     <AnimatePresence>
                       {mobileHomestayOpen && (
-                        <motion.div 
+                        <motion.div
                           className="mobile-dropdown-content ps-3"
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
@@ -435,19 +439,19 @@ const Navbar = () => {
                             <Link to="/homestay/north/lachung" onClick={closeMenu}>Lachung</Link>
                             <Link to="/homestay/north/lachen" onClick={closeMenu}>Lachen</Link>
                             <Link to="/homestay/north/chopta" onClick={closeMenu}>Chopta Valley</Link>
-                            
+
                             <h6 className="text-muted mt-3 mb-2">East Sikkim</h6>
                             <Link to="/homestay/east/gangtok" onClick={closeMenu}>Gangtok</Link>
                             <Link to="/homestay/east/nathula" onClick={closeMenu}>Nathula Pass</Link>
                             <Link to="/homestay/east/tsomgo" onClick={closeMenu}>Tsomgo Lake</Link>
                             <Link to="/homestay/east/ranipool" onClick={closeMenu}>Ranipool</Link>
-                            
+
                             <h6 className="text-muted mt-3 mb-2">West Sikkim</h6>
                             <Link to="/homestay/west/pelling" onClick={closeMenu}>Pelling</Link>
                             <Link to="/homestay/west/yuksom" onClick={closeMenu}>Yuksom</Link>
                             <Link to="/homestay/west/rinchenpong" onClick={closeMenu}>Rinchenpong</Link>
                             <Link to="/homestay/west/gyalshing" onClick={closeMenu}>Gyalshing</Link>
-                            
+
                             <h6 className="text-muted mt-3 mb-2">South Sikkim</h6>
                             <Link to="/homestay/south/namchi" onClick={closeMenu}>Namchi</Link>
                             <Link to="/homestay/south/ravangla" onClick={closeMenu}>Ravangla</Link>
@@ -460,21 +464,29 @@ const Navbar = () => {
                   </div>
 
                   <Link 
+                    to="/experiences" 
+                    className={`mobile-nav-link ${isActive("/experiences") ? "active" : ""}`}
+                    onClick={closeMenu}
+                  >
+                    Experiences
+                  </Link>
+
+                  <Link
                     to="/about" 
                     className={`mobile-nav-link ${isActive("/about") ? "active" : ""}`}
                     onClick={closeMenu}
                   >
                     About
                   </Link>
-                  <Link 
-                    to="/gallery" 
+                  <Link
+                    to="/gallery"
                     className={`mobile-nav-link ${isActive("/gallery") ? "active" : ""}`}
                     onClick={closeMenu}
                   >
                     Gallery
                   </Link>
-                  <Link 
-                    to="/contact" 
+                  <Link
+                    to="/contact"
                     className={`mobile-nav-link ${isActive("/contact") ? "active" : ""}`}
                     onClick={closeMenu}
                   >
@@ -516,9 +528,6 @@ const Navbar = () => {
         onClose={() => setIsSignupModalOpen(false)}
         switchToLogin={switchToLoginModal}
       />
-      <div style={{height: "67px"}}>
-
-      </div>
     </>
   );
 };

@@ -232,7 +232,36 @@ export const testimonials = [
     date: "March 2024",
     roomType: "Deluxe Room"
   },
-  // Add other testimonials here as needed
+  {
+    id: 2,
+    name: "Anjali Gupta",
+    location: "Mumbai, India",
+    comment: "The Cottage Room was so cozy! Loved the traditional Sikkimese touch and the organic breakfast was delicious.",
+    rating: 5,
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
+    date: "February 2024",
+    roomType: "Cottage Room"
+  },
+  {
+    id: 3,
+    name: "Vikram Singh",
+    location: "Bangalore, India",
+    comment: "Great value for money. The Budget Room was clean and located in a very peaceful area. Highly recommended!",
+    rating: 4,
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
+    date: "January 2024",
+    roomType: "Budget Room"
+  },
+  {
+    id: 4,
+    name: "Sneha Reddy",
+    location: "Hyderabad, India",
+    comment: "The Mountain View Room had the most amazing sunrise views. The hospitality was top-notch, felt right at home.",
+    rating: 5,
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80",
+    date: "December 2023",
+    roomType: "Mountain View Room"
+  }
 ];
 
 // Room services data

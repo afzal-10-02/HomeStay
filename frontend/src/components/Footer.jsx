@@ -67,6 +67,9 @@ const Footer = () => {
       <div className="footer-overlay">
         <div className="footer-content">
           <div className="footer-section">
+            <Link to="/" className="d-block mb-3">
+              <img src="/assets/Logo.png" alt="Sikkim Homestay Logo" style={{ height: '70px', filter: 'brightness(1.2)' }} />
+            </Link>
             <h3>Sikkim Homestay</h3>
             <p>
               Experience authentic Sikkimese hospitality in the lap of the Himalayas.

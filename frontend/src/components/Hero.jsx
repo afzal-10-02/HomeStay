@@ -10,9 +10,9 @@ const Hero = () => {
 
   // Images from PUBLIC folder
   const carouselImages = [
-    "./assets/gallery/slider1.webp",
-    "./assets/gallery/slider2.webp",
-    "./assets/gallery/slider3.webp",
+    "./assets/gallery/slider1.png",
+    "./assets/gallery/slider2.png",
+    "./assets/gallery/lounge.jpg",
   ];
 
   // Auto slide

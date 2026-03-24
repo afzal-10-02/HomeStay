@@ -12,7 +12,8 @@ export const experiencesData = [
     description: "Trek to the third highest mountain in the world with expert guides",
     longDescription: "Challenge yourself with this iconic 16-day trek to Kanchenjunga. This advanced trek offers breathtaking views, acclimatization days, and the expertise of experienced local guides who know every trail.",
     images: [
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"
+      "/assets/homestay/kanchenjunga.jpg",
+      "https://images.unsplash.com/photo-1520202296691-2189ac35f522?w=800&q=80"
     ],
     bestSeason: ["May-June", "September-October"],
     groupSize: "4-10 people",
@@ -33,7 +34,8 @@ export const experiencesData = [
     description: "Experience Himalayan beauty with this stunning trek to Goecha La",
     longDescription: "A 6-day moderate trek offering spectacular views of Kanchenjunga, pristine forests, and rhododendron gardens. Perfect for those seeking adventure without extreme difficulty.",
     images: [
-      "https://images.unsplash.com/photo-1564501049418-3c27787d01e8?w=800&q=80"
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80",
+      "https://images.unsplash.com/photo-1544735716-332731046319?w=800&q=80"
     ],
     bestSeason: ["March-May", "September-November"],
     groupSize: "5-12 people",
@@ -54,7 +56,8 @@ export const experiencesData = [
     description: "Visit a sacred glacial lake and the historic mountain pass on the Indo-China border",
     longDescription: "A perfect day excursion from Gangtok. Visit the pristine Tsomgo Lake, explore the historical Nathula Pass, and enjoy stunning views of the Kanchenjunga range.",
     images: [
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"
+      "/assets/homestay/changu.jpeg",
+      "/assets/homestay/Nathula.jpg"
     ],
     bestSeason: ["All Year"],
     groupSize: "Flexible",
@@ -75,7 +78,8 @@ export const experiencesData = [
     description: "Relax in natural hot springs surrounded by pristine alpine valleys",
     longDescription: "Journey to the 'Valley of Flowers' to experience natural geothermal hot springs. Surrounded by alpine scenery and seasonal wildflowers, it's a perfect blend of adventure and relaxation.",
     images: [
-      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80"
+      "/assets/homestay/yumthang.jpg",
+      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80"
     ],
     bestSeason: ["May-June"],
     groupSize: "4-8 people",
@@ -96,7 +100,8 @@ export const experiencesData = [
     description: "Explore North Sikkim's most picturesque valleys and natural attractions",
     longDescription: "This 3-day tour takes you through some of North Sikkim's most stunning landscapes. Visit traditional villages, pristine lakes, and enjoy the warmth of local hospitality.",
     images: [
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"
+      "/assets/homestay/zero_lachung.webp",
+      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80"
     ],
     bestSeason: ["All Year"],
     groupSize: "2-6 people",
@@ -117,7 +122,8 @@ export const experiencesData = [
     description: "Discover the spiritual and cultural heritage of West Sikkim",
     longDescription: "Visit ancient monasteries, learn about Sikkimese culture, and interact with monks. This tour provides deep insight into the spiritual traditions and architectural marvels of the region.",
     images: [
-      "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=800&q=80"
+      "/assets/homestay/pelling_monastery.png",
+      "/assets/homestay/pelling_monastery.png"
     ],
     bestSeason: ["All Year"],
     groupSize: "Flexible",
@@ -138,7 +144,8 @@ export const experiencesData = [
     description: "Experience thrilling white water rafting on Sikkim's pristine rivers",
     longDescription: "Navigate the crystal-clear waters of Teesta River. Suitable for beginners and experienced rafters, this adventure combines adrenaline with stunning riverside scenery.",
     images: [
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"
+      "/assets/homestay/teesta_rafting.png",
+      "assets/homestay/teesta_rafting.png"
     ],
     bestSeason: ["March-May", "September-November"],
     groupSize: "4-8 people",
@@ -159,7 +166,8 @@ export const experiencesData = [
     description: "Explore the vibrant capital city of Sikkim and its bustling markets",
     longDescription: "Discover Gangtok's charm through a guided city tour. Visit local markets, historic sites, and enjoy authentic cuisine at local restaurants.",
     images: [
-      "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=80"
+      "/assets/homestay/mg_marg_exp.png",
+      "/assets/homestay/mg_marg.jpeg"
     ],
     bestSeason: ["All Year"],
     groupSize: "Flexible",
