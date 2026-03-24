@@ -6,9 +6,6 @@ Flask-JWT-Extended
 Flask-Mail
 Flask-SQLAlchemy
 itsdangerous
-Jinja2
-MarkupSafe
 PyJWT
 python-dotenv
 SQLAlchemy
-Werkzeug
