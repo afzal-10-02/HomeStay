@@ -5,6 +5,7 @@ from APIs.role import role_required
 
 
 
+
 @app.route("/dashboard", methods=["GET", "POST"])
 @role_required("user")
 def dashboard():
@@ -12,7 +13,6 @@ def dashboard():
     return {"message" : f"Welcome to User Dashboard, {current_user.fullName}!"}, 200
 
 @app.route("/", methods=["GET", "POST"])
-@role_required("user")
 def home():
 
-    return {"message" : f"Welcome to User Dashboard, {current_user.fullName}!"}, 200
+    return {"message" : f"Welcome the backend is running !"}, 200
