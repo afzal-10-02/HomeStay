@@ -1,4 +1,4 @@
-﻿Flask
+Flask
 flask-cors
 Flask-JWT-Extended
 Flask-Mail
