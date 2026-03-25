@@ -463,8 +463,8 @@ const Navbar = () => {
                     </AnimatePresence>
                   </div>
 
-                  <Link 
-                    to="/experiences" 
+                  <Link
+                    to="/experiences"
                     className={`mobile-nav-link ${isActive("/experiences") ? "active" : ""}`}
                     onClick={closeMenu}
                   >
@@ -472,7 +472,7 @@ const Navbar = () => {
                   </Link>
 
                   <Link
-                    to="/about" 
+                    to="/about"
                     className={`mobile-nav-link ${isActive("/about") ? "active" : ""}`}
                     onClick={closeMenu}
                   >

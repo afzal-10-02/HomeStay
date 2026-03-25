@@ -1,50 +1,12 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import {motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const navigate = useNavigate(); // ✅ REQUIRED
 
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  // Images from PUBLIC folder
   const carouselImages = [
-    "./assets/gallery/slider1.png",
-    "./assets/gallery/slider2.png",
     "./assets/gallery/lounge.jpg",
   ];
-
-  // Auto slide
-  useEffect(() => {
-    let interval;
-    if (isAutoPlaying) {
-      interval = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
-      }, 5000);
-    }
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, carouselImages.length]);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide(
-      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
-    );
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
-  };
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
-  };
 
   return (
     <motion.section
@@ -57,54 +19,12 @@ const Hero = () => {
       <div className="hero-carousel">
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentSlide}
             className="carousel-slide"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.7)), url(${carouselImages[currentSlide]})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.7)), url(${carouselImages[0]})`,
             }}
           />
         </AnimatePresence>
-
-        {/* Controls */}
-        <div className="carousel-controls">
-          <button className="carousel-prev" onClick={prevSlide}>
-            <i className="fas fa-chevron-left"></i>
-          </button>
-          <button className="carousel-next" onClick={nextSlide}>
-            <i className="fas fa-chevron-right"></i>
-          </button>
-        </div>
-
-        {/* Dots */}
-        <div className="carousel-dots">
-          {carouselImages.map((_, index) => (
-            <button
-              key={index}
-              className={`carousel-dot ${
-                index === currentSlide ? "active" : ""
-              }`}
-              onClick={() => goToSlide(index)}
-            />
-          ))}
-        </div>
-
-        {/* Info */}
-        <div className="carousel-info">
-          <div className="slide-counter">
-            <span className="current-slide">{currentSlide + 1}</span>
-            <span className="total-slides"> / {carouselImages.length}</span>
-          </div>
-          <button
-            className="pause-btn"
-            onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-          >
-            <i className={`fas fa-${isAutoPlaying ? "pause" : "play"}`} />
-          </button>
-        </div>
       </div>
 
       {/* Content */}
@@ -112,7 +32,7 @@ const Hero = () => {
         className="hero-content p-0"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
+        transition={{ delay: 0.3, duration: 1 }}
       >
         <div className="tags">
           <span className="tag">🏡 Homestay</span>
@@ -181,26 +101,13 @@ const Hero = () => {
               onClick={() => navigate("/contact")}
             >
               <i className="fas fa-calendar-check"></i>
-              <span>Book Now</span>
+              <span>Contact Now</span>
             </button>
           </div>
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="scroll-indicator"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          delay: 1.5,
-          duration: 1,
-          repeat: Infinity,
-          repeatType: "reverse",
-        }}
-      >
-        <i className="fas fa-chevron-down"></i>
-      </motion.div>
+      
     </motion.section>
   );
 };

@@ -17,15 +17,7 @@ import "swiper/css/autoplay";
 // ── Data ──────────────────────────────────────────────
 import { rooms } from "../data/roomsData";
 import {
-  sikkimDestinations,
   homestays,
-  galleryImages,
-  galleryCategories as categories,
-  locations,
-  homestayTypes,
-  roomTypes,
-  guestOptions,
-  whyChooseUs,
   bookingSteps,
   features,
   overlayCards,
@@ -33,109 +25,28 @@ import {
 } from "../data/destinationsData";
 
 const Home = () => {
-  // State
-  const [bookingForm, setBookingForm] = useState({
-    name: '', phone: '', email: '', roomType: 'deluxe',
-    checkIn: '', checkOut: '', guests: '1'
-  });
-
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  const [searchData, setSearchData] = useState({
-    location: 'Sikkim',
-    homestayType: 'Any Homestay',
-    checkIn: '',
-    checkOut: '',
-    guests: '2',
-    roomType: 'Any Room'
-  });
-
-  // Computed
-  const filteredImages = selectedCategory === 'all'
-    ? galleryImages
-    : galleryImages.filter(img => img.category === selectedCategory);
-
-  // Handlers
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const query = new URLSearchParams(searchData).toString();
-    try {
-      const res = await fetch(`http://localhost:5000/search?${query}`);
-      if (res.ok) console.log(await res.json());
-    } catch (err) {
-      console.error(err);
-      alert("Search failed");
-    }
-  };
-
-  const handleInputChange = (field, value) =>
-    setSearchData(prev => ({ ...prev, [field]: value }));
-
-  const getTomorrowDate = () => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
-  };
-
-  const getDayAfterTomorrow = () => {
-    const d = new Date();
-    d.setDate(d.getDate() + 2);
-    return d.toISOString().split('T')[0];
-  };
-
-  const openLightbox = (img) => {
-    setSelectedImage(img);
-    setLightboxOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeLightbox = () => {
-    setLightboxOpen(false);
-    setSelectedImage(null);
-    document.body.style.overflow = 'auto';
-  };
-
-  const navigateImage = (dir) => {
-    if (!selectedImage) return;
-    const idx = filteredImages.findIndex(i => i.id === selectedImage.id);
-    const next = dir === 'next'
-      ? (idx + 1) % filteredImages.length
-      : (idx - 1 + filteredImages.length) % filteredImages.length;
-    setSelectedImage(filteredImages[next]);
-  };
+  const [gtktemp, setgtktemp] = useState(null);
+  const [temploading, settempLoading] = useState(true);
 
   useEffect(() => {
-    document.querySelectorAll("[data-background]").forEach(el => {
-      const bg = el.getAttribute("data-background");
-      if (bg) el.style.backgroundImage = `url(${bg})`;
-    });
+    const fetchWeather = async () => {
+      try {
+        const response = await fetch(
+          "https://api.open-meteo.com/v1/forecast?latitude=27.3265&longitude=88.612&current_weather=true"
+        );
+        const data = await response.json();
+
+
+        setgtktemp(data.current_weather.temperature);
+        settempLoading(false);
+      } catch (error) {
+        console.error("Error fetching weather:", error);
+        settempLoading(false);
+      }
+    };
+    fetchWeather();
   }, []);
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setBookingForm(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch('http://localhost:5000/booking/room', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bookingForm)
-      });
-      if (res.ok) {
-        alert('Inquiry sent!');
-        setBookingForm({ name: '', phone: '', email: '', roomType: 'deluxe', checkIn: '', checkOut: '', guests: '1' });
-      } else {
-        alert('Failed to send');
-      }
-    } catch {
-      alert('Error occurred');
-    }
-  };
 
   // Animation variants
   const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.2 } } };
@@ -145,87 +56,6 @@ const Home = () => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
       <Hero />
 
-      {/* Search Form */}
-      <motion.section className="bg-light px-6" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.9 }}>
-        <div className="container">
-          <motion.div className="card shadow-lg border-0" initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-            <div className="card-body p-4">
-              <div className="text-center mb-4">
-                <h3 className="fw-bold mb-2">Find Your Perfect Homestay</h3>
-                <p className="text-muted">Authentic Sikkimese hospitality</p>
-              </div>
-
-              <form onSubmit={handleSearch}>
-                <div className="row g-3 mb-3">
-                  <div className="col-12 col-md-6 col-lg-3">
-                    <label className="fw-semibold"><i className="fas fa-map-marker-alt me-2"></i>Location</label>
-                    <div className="input-group">
-                      <span className="input-group-text"><i className="fas fa-map"></i></span>
-                      <select value={searchData.location} onChange={e => handleInputChange('location', e.target.value)} className="form-select">
-                        {locations.map(loc => <option key={loc.value} value={loc.value}>{loc.icon} {loc.label}</option>)}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-12 col-md-6 col-lg-3">
-                    <label className="fw-semibold"><i className="fas fa-home me-2"></i>Homestay Type</label>
-                    <div className="input-group">
-                      <span className="input-group-text"><i className="fas fa-building"></i></span>
-                      <select value={searchData.homestayType} onChange={e => handleInputChange('homestayType', e.target.value)} className="form-select">
-                        {homestayTypes.map(t => <option key={t.value} value={t.value}>{t.icon} {t.label}</option>)}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-12 col-md-6 col-lg-2">
-                    <label className="fw-semibold"><i className="fas fa-calendar-alt me-2"></i>Check-in</label>
-                    <div className="input-group">
-                      <span className="input-group-text"><i className="fas fa-calendar"></i></span>
-                      <input type="date" value={searchData.checkIn} onChange={e => handleInputChange('checkIn', e.target.value)} min={getTomorrowDate()} className="form-control" />
-                    </div>
-                  </div>
-
-                  <div className="col-12 col-md-6 col-lg-2">
-                    <label className="fw-semibold"><i className="fas fa-calendar-check me-2"></i>Check-out</label>
-                    <div className="input-group">
-                      <span className="input-group-text"><i className="fas fa-calendar"></i></span>
-                      <input type="date" value={searchData.checkOut} onChange={e => handleInputChange('checkOut', e.target.value)} min={searchData.checkIn || getDayAfterTomorrow()} className="form-control" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="row g-3">
-                  <div className="col-12 col-md-4">
-                    <label className="fw-semibold"><i className="fas fa-users me-2"></i>Guests</label>
-                    <div className="input-group">
-                      <span className="input-group-text"><i className="fas fa-user"></i></span>
-                      <select value={searchData.guests} onChange={e => handleInputChange('guests', e.target.value)} className="form-select">
-                        {guestOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-12 col-md-4">
-                    <label className="fw-semibold"><i className="fas fa-bed me-2"></i>Room Type</label>
-                    <div className="input-group">
-                      <span className="input-group-text"><i className="fas fa-door-closed"></i></span>
-                      <select value={searchData.roomType} onChange={e => handleInputChange('roomType', e.target.value)} className="form-select">
-                        {roomTypes.map(r => <option key={r.value} value={r.value}>{r.icon} {r.label}</option>)}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-12 col-md-4 d-flex align-items-end">
-                    <motion.button type="submit" className="btn btn-dark-green w-100 py-3 fw-bold" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <i className="fas fa-paper-plane me-2"></i>Submit
-                    </motion.button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
 
       {/* About Section */}
       <section className="about-section py-5">
@@ -252,10 +82,12 @@ const Home = () => {
                     and a peaceful retreat away from the hustle and bustle.
                   </p>
                 </div>
-                <Link to="/about" className="btn btn-dark btn-lg rounded-3 px-4 py-2 about-btn">
-                  <i className="fas fa-info-circle me-2"></i>
-                  About Us <i className="fas fa-arrow-right ms-2"></i>
-                </Link>
+                <div className="d-flex justify-content-center mt-2">
+                  <Link to="/about" className="btn btn-dark btn-lg rounded-3 px-4 py-2 about-btn">
+                    <i className="fas fa-info-circle me-2"></i>
+                    About Us <i className="fas fa-arrow-right ms-2"></i>
+                  </Link>
+                </div>
               </div>
             </div>
             <div className="col-lg-6">
@@ -265,7 +97,7 @@ const Home = () => {
                   alt="Sikkim landscape"
                   className="img-fluid rounded-5 shadow-lg main-image"
                 />
-                <div className="position-absolute bottom-0 end-0 mb-4 me-3 custom-badge-gradient float-animation text-white py-2 px-4 rounded-pill fw-bold small d-flex align-items-center z-index-10 shadow-lg">
+                <div className="position-absolute bottom-0 end-0 mb-4 me-3 custom-badge-gradient text-white py-2 px-4 rounded-pill fw-bold small d-flex align-items-center z-index-10 shadow-lg">
                   <i className="fas fa-award me-2"></i>
                   <span>Best Homestay 2024</span>
                 </div>
@@ -285,7 +117,7 @@ const Home = () => {
             pointerEvents: 'none'
           }}
         />
-        <div className="sikkim-header text-center mb-5">
+        <div className="sikkim-header text-center mb-2">
           <motion.h2
             className="display-4 text-dark fw-bold mb-3 about-title"
             initial={{ opacity: 0, y: -20 }}
@@ -296,12 +128,12 @@ const Home = () => {
           </motion.h2>
           <motion.p
             className="fs-5 mx-auto"
-            style={{ maxWidth: '600px', color: 'rgba(255, 255, 255, 0.8)' }}
+            style={{ maxWidth: '600px', color: 'rgba(0, 0, 0, 0.8)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            Experience the perfect blend of Himalayan beauty, culture, and hospitality
+            Experience the perfect blend of Himalayan beauty, culture and hospitality
           </motion.p>
         </div>
         <div className="container">
@@ -401,7 +233,7 @@ const Home = () => {
                     zIndex: 3
                   }}
                   animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  transition={{ duration: 3, repeat: Infinity }}
                 >
                   <i className="fas fa-award"></i>
                   <span>Best Budget 2024</span>
@@ -452,7 +284,7 @@ const Home = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                <h4 className="h5 text-white mb-3">Budget Travel Tips</h4>
+                <h4 className="h5 text-black mb-3">Budget Travel Tips</h4>
                 <ul className="special-list list-unstyled mb-0">
                   <li className="py-2 d-flex align-items-center gap-3 border-bottom border-light border-opacity-25">
                     <i className="fas fa-leaf" style={{ color: 'rgb(30 111 92 / 94%)' }}></i>
@@ -482,11 +314,9 @@ const Home = () => {
               >
                 <div className="weather-icon fs-1" style={{ opacity: 0.9 }}>⛅</div>
                 <div className="weather-info">
-                  <span className="temp d-block fs-2 fw-bold">18°C</span>
+                  <span className="temp d-block fs-2 fw-bold">{gtktemp }°C</span>
                   <span className="location d-block">Gangtok</span>
-                  <span className="desc d-block fs-6 fst-italic" style={{ opacity: 0.8 }}>
-                    Perfect for trekking
-                  </span>
+                  
                 </div>
               </motion.div>
 
@@ -514,152 +344,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Gallery Section */}
-      <motion.section
-        className="gallery-section section-space"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
-        <div className="container">
-          <div className="section-header text-center mb-6">
-            <motion.span
-              className="section-tag"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <i className="fas fa-camera me-2"></i> Visual Journey
-            </motion.span>
-            <motion.h2
-              className="section-title mt-3 mb-4 about-title fw-bold"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              Experience Sikkim Through Our Lens
-            </motion.h2>
-            <motion.p
-              className="section-subtitle mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              A glimpse into the beauty and comfort that awaits you
-            </motion.p>
-          </div>
-
-          <motion.div className="gallery-filter mb-8" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.6 }}>
-            <div className="filter-container">
-              {categories.map((category, index) => (
-                <motion.button
-                  key={category.id}
-                  className={`filter-btn ${selectedCategory === category.id ? 'active' : ''}`}
-                  onClick={() => setSelectedCategory(category.id)}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <i className={`fas ${category.icon} me-2`}></i>
-                  {category.name}
-                  <span className="count-badge">{category.count}</span>
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div className="gallery-grid" layout>
-            {filteredImages.map((image, index) => (
-              <motion.div
-                key={image.id}
-                className="gallery-item"
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.05, type: "spring", stiffness: 100 }}
-                whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-                onClick={() => openLightbox(image)}
-              >
-                <div className="image-container">
-                  <img src={image.src} alt={image.alt} loading="lazy" />
-                  <div className="image-overlay">
-                    <div className="overlay-content">
-                      <h4>{image.title}</h4>
-                      <p>{image.description}</p>
-                      <div className="view-btn">
-                        <i className="fas fa-expand"></i>
-                        <span>View Full</span>
-                      </div>
-                    </div>
-                    <div className="category-tag">
-                      <i className={`fas ${image.category === 'rooms' ? 'fa-bed' :
-                          image.category === 'views' ? 'fa-mountain' :
-                            image.category === 'garden' ? 'fa-tree' :
-                              image.category === 'dining' ? 'fa-utensils' : 'fa-home'
-                        }`}></i>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <motion.div className="text-center mt-8" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }}>
-            <Link to="/gallery" className="btn sign-bg btn-lg text-decoration-none">
-              <i className="fas fa-images me-2"></i> View Full Gallery
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* Lightbox */}
-      {lightboxOpen && selectedImage && (
-        <motion.div className="lightbox-modal" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeLightbox}>
-          <motion.div className="lightbox-content" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} onClick={(e) => e.stopPropagation()}>
-            <button
-              className="position-absolute top-0 end-0 mt-4 me-4 md:mt-6 md:me-6 z-3 p-1 rounded-pill text-white d-flex align-items-center justify-content-center shadow-lg transition-all"
-              style={{
-                width: '36px',
-                height: '36px',
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                backgroundColor: '#1a4d42',
-                border: 'none'
-              }}
-              onClick={closeLightbox}
-              aria-label="Close lightbox"
-            >
-              ×
-            </button>
-            <div className="lightbox-image-container">
-              <motion.img
-                key={selectedImage.id}
-                src={selectedImage.src}
-                alt={selectedImage.alt}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-              <button className="nav-btn prev" onClick={() => navigateImage('prev')}>
-                <i className="fas fa-chevron-left"></i>
-              </button>
-              <button className="nav-btn next" onClick={() => navigateImage('next')}>
-                <i className="fas fa-chevron-right"></i>
-              </button>
-            </div>
-            <div className="lightbox-info">
-              <h3>{selectedImage.title}</h3>
-              <p>{selectedImage.description}</p>
-              <div className="image-counter">
-                {filteredImages.findIndex(img => img.id === selectedImage.id) + 1} / {filteredImages.length}
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
 
       {/* Rooms Section */}
       <motion.section
@@ -883,7 +567,7 @@ const Home = () => {
               transition={{ boxShadow: { duration: 3, repeat: Infinity } }}
             >
               <Link to="/contact" className="cta-link">
-                <span className="cta-text">Start Your Journey</span>
+                <span className="cta-text">Book Your Journey</span>
               </Link>
               <motion.i className="fas fa-arrow-right" animate={{ x: [0, 5, 0] }} transition={{ duration: 1, repeat: Infinity }} />
             </motion.button>
@@ -891,318 +575,6 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* Inquiry Form */}
-      <motion.section
-        className="split-booking py-5 d-flex align-items-center"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <div className="split-container container">
-          <div className="row g-4 g-lg-5">
-            {/* Motivation Side */}
-            <motion.div
-              className="motivation-side col-12 col-lg-6 position-relative overflow-hidden rounded-4 d-flex align-items-end p-4 p-md-5"
-              style={{
-                background: 'linear-gradient(135deg, #1e6f5ce3 0%, #3aa17ef2 100%), url("https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&auto=format&fit=crop")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                minHeight: '600px'
-              }}
-              initial={{ x: -50, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              {/* Overlay */}
-              <div className="motivation-overlay position-absolute top-0 start-0 end-0 bottom-0"
-                style={{ background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 50%)', zIndex: 1 }}>
-              </div>
-
-              {/* Content */}
-              <div className="motivation-content position-relative w-100" style={{ zIndex: 2 }}>
-                {/* Quote Box */}
-                <motion.div
-                  className="quote-box mb-4 p-4 rounded-4"
-                  style={{ background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.2)' }}
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <i className="fas fa-quote-left quote-icon fs-2 mb-2 d-block" style={{ color: '#e0e8e7' }}></i>
-                  <h3 className="quote-text text-white mb-0" style={{ fontSize: '1.8rem', fontWeight: 600, lineHeight: 1.4, fontFamily: "'Playfair Display', serif" }}>
-                    Escape to the Himalayas. Find peace in every mountain breeze.
-                  </h3>
-                </motion.div>
-
-                {/* Benefits List */}
-                <div className="benefits-list d-flex flex-column gap-2 mb-4">
-                  <motion.div className="benefit-item d-flex align-items-center gap-3 p-3 rounded-3"
-                    style={{ background: 'rgba(255, 255, 255, 0.05)', color: 'rgba(255, 255, 255, 0.9)', cursor: 'pointer' }}
-                    whileHover={{ x: 10 }}
-                    transition={{ type: "spring" }}>
-                    <i className="fas fa-check-circle" style={{ color: '#4ade80', fontSize: '1.1rem' }}></i>
-                    <span>Authentic Sikkimese hospitality</span>
-                  </motion.div>
-                  <motion.div className="benefit-item d-flex align-items-center gap-3 p-3 rounded-3"
-                    style={{ background: 'rgba(255, 255, 255, 0.05)', color: 'rgba(255, 255, 255, 0.9)', cursor: 'pointer' }}
-                    whileHover={{ x: 10 }}
-                    transition={{ type: "spring", delay: 0.1 }}>
-                    <i className="fas fa-check-circle" style={{ color: '#4ade80', fontSize: '1.1rem' }}></i>
-                    <span>Breathtaking mountain views</span>
-                  </motion.div>
-                  <motion.div className="benefit-item d-flex align-items-center gap-3 p-3 rounded-3"
-                    style={{ background: 'rgba(255, 255, 255, 0.05)', color: 'rgba(255, 255, 255, 0.9)', cursor: 'pointer' }}
-                    whileHover={{ x: 10 }}
-                    transition={{ type: "spring", delay: 0.2 }}>
-                    <i className="fas fa-check-circle" style={{ color: '#4ade80', fontSize: '1.1rem' }}></i>
-                    <span>24/7 personalized service</span>
-                  </motion.div>
-                  <motion.div className="benefit-item d-flex align-items-center gap-3 p-3 rounded-3"
-                    style={{ background: 'rgba(255, 255, 255, 0.05)', color: 'rgba(255, 255, 255, 0.9)', cursor: 'pointer' }}
-                    whileHover={{ x: 10 }}
-                    transition={{ type: "spring", delay: 0.3 }}>
-                    <i className="fas fa-check-circle" style={{ color: '#4ade80', fontSize: '1.1rem' }}></i>
-                    <span>Traditional local cuisine</span>
-                  </motion.div>
-                </div>
-
-                {/* CTA Box */}
-                <motion.div
-                  className="cta-box d-flex align-items-center gap-4 p-4 rounded-4 text-white"
-                  style={{ background: 'linear-gradient(135deg, #ff6b35, #ff8b35)' }}
-                  animate={{ boxShadow: ["0 10px 30px rgba(255, 107, 53, 0.3)", "0 15px 40px rgba(255, 107, 53, 0.4)", "0 10px 30px rgba(255, 107, 53, 0.3)"] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <div className="cta-icon d-flex align-items-center justify-content-center rounded-circle"
-                    style={{ width: '60px', height: '60px', background: 'rgba(255, 255, 255, 0.2)', fontSize: '1.8rem' }}>
-                    <i className="fas fa-gem"></i>
-                  </div>
-                  <div className="cta-content">
-                    <h4 className="mb-1 fs-4 fw-bold">Limited Availability</h4>
-                    <p className="mb-0 opacity-75">Book now to secure your preferred dates</p>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-
-            {/* Booking Side */}
-            <motion.div
-              className="booking-side col-12 col-lg-6 d-flex align-items-center"
-              initial={{ x: 50, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="booking-card w-100 bg-white p-4 p-md-5 rounded-4 shadow-lg border-0"
-                style={{ boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1)' }}>
-
-                {/* Form Header */}
-                <div className="form-header text-center mb-4">
-                  <h2 className="form-title mb-2 display-5 fw-bold text-dark"
-                    style={{
-                      fontFamily: "'Playfair Display', serif",
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text'
-                    }}>
-                    Reserve Your Stay
-                  </h2>
-                  <p className="form-subtitle mb-0 text-secondary">Complete your booking in 2 minutes</p>
-                </div>
-
-                {/* Form */}
-                <form className="booking-form" onSubmit={handleFormSubmit}>
-                  <div className="form-grid row g-3 mb-4">
-                    {/* Full Name */}
-                    <div className="form-group col-12 col-md-6">
-                      <label className="mb-2 fw-medium" style={{ color: '#444' }}>Full Name *</label>
-                      <div className="input-wrapper d-flex align-items-center px-3"
-                        style={{ height: '55px', background: '#f8fafc', borderRadius: '10px', border: '2px solid #e2e8f0' }}>
-                        <i className="fas fa-user me-3" style={{ color: '#666', width: '20px' }}></i>
-                        <input
-                          type="text"
-                          name="name"
-                          className="w-100 border-0 bg-transparent"
-                          style={{ outline: 'none' }}
-                          value={bookingForm.name}
-                          onChange={handleFormChange}
-                          required
-                          placeholder="Enter your name"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Email Address */}
-                    <div className="form-group col-12 col-md-6">
-                      <label className="mb-2 fw-medium" style={{ color: '#444' }}>Email Address *</label>
-                      <div className="input-wrapper d-flex align-items-center px-3"
-                        style={{ height: '55px', background: '#f8fafc', borderRadius: '10px', border: '2px solid #e2e8f0' }}>
-                        <i className="fas fa-envelope me-3" style={{ color: '#666', width: '20px' }}></i>
-                        <input
-                          type="email"
-                          name="email"
-                          className="w-100 border-0 bg-transparent"
-                          style={{ outline: 'none' }}
-                          value={bookingForm.email}
-                          onChange={handleFormChange}
-                          required
-                          placeholder="your@email.com"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Phone Number */}
-                    <div className="form-group col-12 col-md-6">
-                      <label className="mb-2 fw-medium" style={{ color: '#444' }}>Phone Number *</label>
-                      <div className="input-wrapper d-flex align-items-center px-3"
-                        style={{ height: '55px', background: '#f8fafc', borderRadius: '10px', border: '2px solid #e2e8f0' }}>
-                        <i className="fas fa-phone me-3" style={{ color: '#666', width: '20px' }}></i>
-                        <input
-                          type="tel"
-                          name="phone"
-                          className="w-100 border-0 bg-transparent"
-                          style={{ outline: 'none' }}
-                          value={bookingForm.phone}
-                          onChange={handleFormChange}
-                          required
-                          placeholder="+91 98765 43210"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Check-in Date */}
-                    <div className="form-group col-12 col-md-6">
-                      <label className="mb-2 fw-medium" style={{ color: '#444' }}>Check-in Date</label>
-                      <div className="input-wrapper d-flex align-items-center px-3 position-relative"
-                        style={{ height: '55px', background: '#f8fafc', borderRadius: '10px', border: '2px solid #e2e8f0' }}>
-                        <i className="fas fa-calendar me-3" style={{ color: '#666', width: '20px' }}></i>
-                        <input
-                          type="date"
-                          name="checkIn"
-                          className="w-100 border-0 bg-transparent"
-                          style={{ outline: 'none' }}
-                          value={bookingForm.checkIn}
-                          onChange={handleFormChange}
-                        />
-                        {bookingForm.checkIn && (
-                          <span className="date-badge position-absolute end-0 me-3 px-3 py-1 rounded-3 text-white"
-                            style={{ background: 'var(--primary-color)', fontSize: '0.85rem', fontWeight: 600 }}>
-                            {new Date(bookingForm.checkIn).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-
-                    {/* Check-out Date */}
-                    <div className="form-group col-12 col-md-6">
-                      <label className="mb-2 fw-medium" style={{ color: '#444' }}>Check-out Date</label>
-                      <div className="input-wrapper d-flex align-items-center px-3 position-relative"
-                        style={{ height: '55px', background: '#f8fafc', borderRadius: '10px', border: '2px solid #e2e8f0' }}>
-                        <i className="fas fa-calendar me-3" style={{ color: '#666', width: '20px' }}></i>
-                        <input
-                          type="date"
-                          name="checkOut"
-                          className="w-100 border-0 bg-transparent"
-                          style={{ outline: 'none' }}
-                          value={bookingForm.checkOut}
-                          onChange={handleFormChange}
-                        />
-                        {bookingForm.checkOut && (
-                          <span className="date-badge position-absolute end-0 me-3 px-3 py-1 rounded-3 text-white"
-                            style={{ background: 'var(--primary-color)', fontSize: '0.85rem', fontWeight: 600 }}>
-                            {new Date(bookingForm.checkOut).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Room Type */}
-                    <div className="form-group col-12 col-md-6">
-                      <label className="mb-2 fw-medium" style={{ color: '#444' }}>Room Type</label>
-                      <div className="input-wrapper d-flex align-items-center px-3"
-                        style={{ height: '55px', background: '#f8fafc', borderRadius: '10px', border: '2px solid #e2e8f0' }}>
-                        <i className="fas fa-bed me-3" style={{ color: '#666', width: '20px' }}></i>
-                        <select
-                          name="roomType"
-                          className="w-100 border-0 bg-transparent"
-                          style={{ outline: 'none', appearance: 'none' }}
-                          value={bookingForm.roomType}
-                          onChange={handleFormChange}
-                        >
-                          <option value="">Select room type</option>
-                          <option value="deluxe">🏔️ Mountain View Deluxe</option>
-                          <option value="family">👨‍👩‍👧‍👦 Family Suite</option>
-                          <option value="cottage">🏡 Traditional Cottage</option>
-                          <option value="Budget">💰 Budget Rooms</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* Number of Guests */}
-                    <div className="form-group col-12 col-md-6">
-                      <label className="mb-2 fw-medium" style={{ color: '#444' }}>Number of Guests</label>
-                      <div className="input-wrapper d-flex align-items-center px-3"
-                        style={{ height: '55px', background: '#f8fafc', borderRadius: '10px', border: '2px solid #e2e8f0' }}>
-                        <i className="fas fa-users me-3" style={{ color: '#666', width: '20px' }}></i>
-                        <select
-                          name="guests"
-                          className="w-100 border-0 bg-transparent"
-                          style={{ outline: 'none', appearance: 'none' }}
-                          value={bookingForm.guests}
-                          onChange={handleFormChange}
-                        >
-                          <option value="">Select guests</option>
-                          <option value="1">1 Guest</option>
-                          <option value="2">2 Guests</option>
-                          <option value="3">3 Guests</option>
-                          <option value="4">4 Guests</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Submit Button */}
-                  <motion.button
-                    type="submit"
-                    className="submit-btn w-100 d-flex align-items-center justify-content-center gap-3 border-0 text-white fw-semibold position-relative overflow-hidden"
-                    style={{
-                      height: '60px',
-                      background: 'linear-gradient(135deg, #1E6F5C, #3AA17E)',
-                      borderRadius: '12px',
-                      fontSize: '1.1rem'
-                    }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <i className="fas fa-paper-plane fs-5"></i>
-                    Book Your Stay
-                    <span className="btn-badge ms-3 px-3 py-1 rounded-pill" style={{ background: 'rgba(255, 255, 255, 0.2)', fontSize: '0.8rem' }}>
-                      Secure Booking
-                    </span>
-                  </motion.button>
-
-                  {/* Trust Indicators */}
-                  <div className="trust-indicators d-flex justify-content-center gap-3 gap-md-4 mt-4 pt-4 border-top">
-                    <div className="trust-item d-flex align-items-center gap-2" style={{ color: '#666', fontSize: '0.9rem' }}>
-                      <i className="fas fa-lock" style={{ color: '#4CAF50' }}></i>
-                      <span>SSL Secured</span>
-                    </div>
-                    <div className="trust-item d-flex align-items-center gap-2" style={{ color: '#666', fontSize: '0.9rem' }}>
-                      <i className="fas fa-bolt" style={{ color: '#4CAF50' }}></i>
-                      <span>Instant Confirmation</span>
-                    </div>
-                    <div className="trust-item d-flex align-items-center gap-2" style={{ color: '#666', fontSize: '0.9rem' }}>
-                      <i className="fas fa-headset" style={{ color: '#4CAF50' }}></i>
-                      <span>24/7 Support</span>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
 
       {/* Testimonials */}
       <motion.section
@@ -1222,14 +594,7 @@ const Home = () => {
               <motion.p className="text-variant-1 mb-4 mb-lg-5" variants={itemVariants}>
                 Trusted by hundreds of travelers, Sikkim Homestay delivers authentic, memorable experiences in the heart of Himalayas.
               </motion.p>
-              <motion.div className="box-navigation d-flex gap-3 mt-4" variants={itemVariants}>
-                <div className="navigation swiper-nav-prev nav-prev-testimonial" role="button" aria-label="Previous slide" onClick={() => document.querySelector('.tf-sw-testimonial .swiper-button-prev')?.click()}>
-                  <span className="icon icon-arr-l">←</span>
-                </div>
-                <div className="navigation swiper-nav-next nav-next-testimonial" role="button" aria-label="Next slide" onClick={() => document.querySelector('.tf-sw-testimonial .swiper-button-next')?.click()}>
-                  <span className="icon icon-arr-r">→</span>
-                </div>
-              </motion.div>
+
             </div>
 
             <div className="col-lg-9">
@@ -1282,7 +647,7 @@ const Home = () => {
       </motion.section>
 
       {/* Popular Homestays */}
-      <div className="homestay_section pt-5 pb-5">
+      <div className="homestay_section pt-3 pb-3">
         <div className="container">
           <div className="row">
             <div className="col-lg-12 mb-5 text-center">
