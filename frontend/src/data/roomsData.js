@@ -33,11 +33,12 @@ export const roomsData = [
       "Butler Service"
     ],
     images: [
-      "../assets/rooms/Delux1.webp",
-      "../assets/rooms/delux2.jpg",
-      "../assets/rooms/delux3.avif",
-      "../assets/rooms/delux4.avif",
+      "/assets/rooms/Delux1.webp",
+      "/assets/rooms/delux2.jpg",
+      "/assets/rooms/delux3.avif",
+      "/assets/rooms/delux4.avif",
     ]
+
   },
   {
     id: 2,
@@ -66,11 +67,12 @@ export const roomsData = [
       "Baby crib (on request)"
     ],
     images: [
-      "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=1200",
-      "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200",
-      "https://images.unsplash.com/photo-1564501049418-3c27787d01e8?w=1200",
-      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1200"
+      "/assets/rooms/family1.jpg",
+      "/assets/rooms/family2.jpeg",
+      "/assets/rooms/family3.avif",
+      "/assets/rooms/family4.jpeg"
     ]
+
   },
   {
     id: 3,
@@ -172,10 +174,11 @@ export const roomsData = [
       "Wi-Fi"
     ],
     images: [
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200",
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200",
-      "https://images.unsplash.com/photo-1564501049418-3c27787d01e8?w=1200"
+      "/assets/rooms/mountain1.webp",
+      "/assets/rooms/mountain2.jpg",
+      "/assets/rooms/mountain3.jpg"
     ]
+
   },
   {
     id: 6,

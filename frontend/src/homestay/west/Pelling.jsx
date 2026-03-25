@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import BookingForm from "../../components/BookingForm";
+import HomestayCard from "../../components/HomestayCard";
 import "../../index.css";
+
 
 const Pelling = () => {
   const [selectedHomestay, setSelectedHomestay] = useState(null);
@@ -58,41 +60,17 @@ const Pelling = () => {
       <section className="homestay-listings">
         <div className="container">
           <h2>Available Homestays in Pelling</h2>
-          <div className="homestay-grid">
-            {homestays.map((homestay) => (
-              <div key={homestay.id} className="homestay-card">
-                <div className="homestay-image">
-                  <img src={homestay.image} alt={homestay.name} />
-                  <span className="price-badge">{homestay.price}</span>
-                  <span className="rating-badge">{homestay.rating}</span>
-                </div>
-                <div className="homestay-content">
-                  <h3>{homestay.name}</h3>
-                  <p className="location">{homestay.location}</p>
-                  <p className="description">{homestay.description}</p>
-                  
-                  <div className="amenities">
-                    <h4>Amenities:</h4>
-                    <ul>
-                      {homestay.amenities.map((amenity, index) => (
-                        <li key={index}>{amenity}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="homestay-footer">
-                    <p className="contact">Contact: {homestay.contact}</p>
-                    <button 
-                      className="book-button"
-                      onClick={() => setSelectedHomestay(homestay)}
-                    >
-                      Book Now
-                    </button>
-                  </div>
-                </div>
+          <div className="row g-4 justify-content-center">
+            {homestays.map((stay) => (
+              <div key={stay.id} className="col-12 col-md-6 col-lg-4">
+                <HomestayCard 
+                    stay={stay} 
+                    onBook={(stay) => setSelectedHomestay(stay)} 
+                />
               </div>
             ))}
           </div>
+
         </div>
       </section>
 

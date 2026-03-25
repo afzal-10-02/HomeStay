@@ -2,7 +2,22 @@ const RoomOverview = ({ room }) => {
   return (
     <div className="room-info">
       <h2 className="mb-2" style={{ paddingBottom: '10px' }}>Room Overview</h2>
-      <p className="room-full-description fs-6 mb-3 text-center" style={{ color: '#6B7280' }}>
+      
+      {/* Attractive Featured Image in Overview */}
+      {room.images && room.images[1] && (
+        <div 
+          className="featured-overview-image mb-4 rounded-4 shadow-sm overflow-hidden" 
+          style={{ height: '350px' }}
+        >
+          <img 
+            src={room.images[1]} 
+            alt={`${room.title} showcase`} 
+            className="w-100 h-100 object-fit-cover"
+          />
+        </div>
+      )}
+
+      <p className="room-full-description fs-6 mb-4" style={{ color: '#4B5563', lineHeight: '1.8' }}>
         {room.description}
       </p>
       

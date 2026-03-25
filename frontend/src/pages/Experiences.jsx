@@ -43,9 +43,9 @@ const Experiences = () => {
                         transition={{ duration: 0.8 }}
                         className="hero-content text-center text-white"
                     >
-                        <Badge className="mb-3 px-3 py-2 rounded-pill border-0 custom-badge-gradient text-white">
+                        <div className="d-inline-block mb-3 px-3 py-2 rounded-pill text-white shadow-sm fw-bold" style={{ backgroundColor: '#1a4d42', border: 'none' }}>
                             UNFORGETTABLE ADVENTURES
-                        </Badge>
+                        </div>
                         <h1 className="display-3 fw-bold mb-4">Sikkim Experiences</h1>
                         <p className="lead mb-0">From tranquil monasteries to adrenaline-pumping treks, discover the heart of the Himalayas.</p>
                     </motion.div>

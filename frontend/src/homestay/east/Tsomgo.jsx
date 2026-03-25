@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import BookingForm from "../../components/BookingForm";
+import HomestayCard from "../../components/HomestayCard";
 import "../../index.css";
+
 
 const Tsomgo = () => {
   const [selectedHomestay, setSelectedHomestay] = useState(null);
@@ -78,39 +80,17 @@ const Tsomgo = () => {
         <div className="container">
           <h2>Available Homestays Near Tsomgo Lake</h2>
 
-          <div className="homestay-grid">
+          <div className="row g-4 justify-content-center">
             {homestays.map((stay) => (
-              <div key={stay.id} className="homestay-card">
-                <div className="homestay-image">
-                  <img src={stay.image} alt={stay.name} />
-                  <span className="price-badge">{stay.price}</span>
-                  <span className="rating-badge">{stay.rating}</span>
-                </div>
-
-                <div className="homestay-content">
-                  <h3>{stay.name}</h3>
-                  <p className="location">{stay.location}</p>
-                  <p className="description">{stay.description}</p>
-
-                  <ul>
-                    {stay.amenities.map((a, i) => (
-                      <li key={i}>{a}</li>
-                    ))}
-                  </ul>
-
-                  <div className="homestay-footer">
-                    <p className="contact">📞 {stay.contact}</p>
-                    <button 
-                      className="book-button" 
-                      onClick={() => setSelectedHomestay(stay)}
-                    >
-                      Book Now
-                    </button>
-                  </div>
-                </div>
+              <div key={stay.id} className="col-12 col-md-6 col-lg-4">
+                <HomestayCard 
+                    stay={stay} 
+                    onBook={(stay) => setSelectedHomestay(stay)} 
+                />
               </div>
             ))}
           </div>
+
 
         </div>
       </section>

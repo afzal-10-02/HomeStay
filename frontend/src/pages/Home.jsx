@@ -9,6 +9,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import RoomCard from "../components/RoomCard.jsx";
 
+
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -97,10 +99,11 @@ const Home = () => {
                   alt="Sikkim landscape"
                   className="img-fluid rounded-5 shadow-lg main-image"
                 />
-                <div className="position-absolute bottom-0 end-0 mb-4 me-3 custom-badge-gradient text-white py-2 px-4 rounded-pill fw-bold small d-flex align-items-center z-index-10 shadow-lg">
+                <div className="position-absolute bottom-0 end-0 mb-4 me-3 text-white py-2 px-4 rounded-pill fw-bold small d-flex align-items-center z-index-10 shadow-lg" style={{ backgroundColor: '#1a4d42' }}>
                   <i className="fas fa-award me-2"></i>
                   <span>Best Homestay 2024</span>
                 </div>
+
               </div>
             </div>
           </div>
@@ -402,7 +405,8 @@ const Home = () => {
                 whileHover={{ y: -10 }}
               >
                 {/* FIX: Changed from Link to div - outer wrapper is now a div to prevent nested <a> tags */}
-                <div className="text-decoration-none text-dark d-block h-100">
+                <div className="text-decoration-none text-dark d-block h-100 region-container">
+
                   <div className="card h-100 border-0 shadow overflow-hidden" style={{ borderRadius: "1rem" }}>
                     {/* Make only the image/header area clickable for the main link */}
                     <Link to={region.link} className="text-decoration-none">
@@ -418,18 +422,16 @@ const Home = () => {
                           style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)" }}
                         ></div>
                         <div
-                          className="position-absolute top-0 end-0 m-3 rounded-circle d-flex align-items-center justify-content-center shadow"
+                          className="position-absolute top-0 end-0 m-3 rounded-circle d-flex align-items-center justify-content-center shadow region-badge-icon"
                           style={{
-                            width: "60px",
-                            height: "60px",
-                            backgroundColor: `${region.color}30`,
-                            color: region.color,
-                            backdropFilter: "blur(6px)",
-                            fontSize: "1.6rem"
+                            width: "55px",
+                            height: "55px",
+                            fontSize: "1.5rem"
                           }}
                         >
                           <i className={region.icon}></i>
                         </div>
+
                       </div>
                     </Link>
 
@@ -646,12 +648,15 @@ const Home = () => {
         </div>
       </motion.section>
 
+
+
       {/* Popular Homestays */}
       <div className="homestay_section pt-3 pb-3">
+
         <div className="container">
           <div className="row">
             <div className="col-lg-12 mb-5 text-center">
-              <h2 className="popular-content">Popular Homestays in Sikkim</h2>
+              <h2 className="popular-content">Popular Homestays in <span className="gradient-text">Sikkim</span></h2>
               <p className="header-subtitle-3d">Authentic hospitality in handpicked Sikkim homestays.</p>
             </div>
           </div>
@@ -678,6 +683,8 @@ const Home = () => {
       </div>
 
     </motion.div>
+
+
   );
 };
 

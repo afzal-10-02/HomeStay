@@ -25,6 +25,8 @@ import SouthSikkim from "./homestay/south/Southsikkim";
 import Namchi from "./homestay/south/Namchi";
 import Ravangla from "./homestay/south/Ravangla";
 import TemiTea from "./homestay/south/Temitea";
+import Jorethang from "./homestay/south/Jorethang";
+
 
 /* WEST */
 import WestSikkim from "./homestay/west/Westsikkim";
@@ -83,6 +85,8 @@ function App() {
             <Route path="/homestay/south/namchi" element={<Namchi />} />
             <Route path="/homestay/south/ravangla" element={<Ravangla />} />
             <Route path="/homestay/south/temitea" element={<TemiTea />} />
+            <Route path="/homestay/south/jorethang" element={<Jorethang />} />
+
 
             {/* WEST */}
             <Route path="/homestay/westsikkim" element={<WestSikkim />} />

@@ -70,7 +70,9 @@ export const featuredRegions = [
     name: "East Sikkim",
     description: "Vibrant capital with monasteries, lakes and mountain views",
     image: "/assets/homestay/mg_marg.jpeg",
-    icon: "bi bi-building",
+    icon: "fas fa-compass",
+
+
     color: "#059669",
     highlights: [
       { name: "Gangtok", slug: "gangtok" },
@@ -84,7 +86,8 @@ export const featuredRegions = [
     name: "West Sikkim",
     description: "Ancient monasteries, waterfalls and majestic Kanchenjunga views",
     image: "/assets/homestay/west.jpg",
-    icon: "bi bi-mountains",
+    icon: "fas fa-mountain",
+
     color: "#0d9488",
     highlights: [
       { name: "Pelling", slug: "pelling" },
@@ -98,7 +101,8 @@ export const featuredRegions = [
     name: "North Sikkim",
     description: "Snow-covered valleys, hot springs and high-altitude lakes",
     image: "/assets/homestay/north.jpg",
-    icon: "bi bi-snow",
+    icon: "fas fa-snowflake",
+
     color: "#0d9488",
     highlights: [
       { name: "Lachung", slug: "lachung" },
@@ -112,7 +116,8 @@ export const featuredRegions = [
     name: "South Sikkim",
     description: "Giant Buddha statues, tea gardens and peaceful monasteries",
     image: "/assets/homestay/south.jpg",
-    icon: "bi bi-leaf",
+    icon: "fas fa-leaf",
+
     color: "#0d9488",
     highlights: [
       { name: "Namchi", slug: "namchi" },
@@ -234,7 +239,12 @@ export const galleryImages = [
   { id: 9, src: "/assets/gallery/modern-bathroom.avif", alt: "Bathroom", category: "rooms", title: "Modern Bathroom", description: "Clean and spacious facilities" },
   { id: 10, src: "/assets/gallery/cultural-artifact.jpg", alt: "Cultural Decor", category: "interior", title: "Cultural Artifacts", description: "Local art and craftsmanship" },
   { id: 11, src: "/assets/gallery/stary-night.webp", alt: "Night View", category: "views", title: "Starry Night", description: "Clear Himalayan night sky" },
-  { id: 12, src: "/assets/gallery/morning-breakfast.jpg", alt: "Breakfast Setup", category: "dining", title: "Morning Breakfast", description: "Fresh local produce" }
+  { id: 12, src: "/assets/gallery/morning-breakfast.jpg", alt: "Breakfast Setup", category: "dining", title: "Morning Breakfast", description: "Fresh local produce" },
+  { id: 13, src: "/assets/homestay/gurudongmar_lachen.jpg", alt: "Gurudongmar Lake", category: "views", title: "Gurudongmar Lake", description: "Sacred high-altitude lake in North Sikkim" },
+  { id: 14, src: "/assets/homestay/mg_marg.jpeg", alt: "MG Marg Gangtok", category: "views", title: "MG Marg", description: "The heart of Gangtok's vibrant culture" },
+  { id: 15, src: "/assets/homestay/tsomgo_lake.webp", alt: "Tsomgo Lake", category: "views", title: "Tsomgo Lake", description: "Glacial lake nestled in the East Sikkim mountains" },
+  { id: 16, src: "/assets/homestay/river_lachen.jpg", alt: "Lachen River", category: "views", title: "River Teesta Tributary", description: "Pristine waters flowing through Lachen valley" },
+  { id: 17, src: "/assets/homestay/rhodhodendron_lach.jpeg", alt: "Rhododendron Blooms", category: "garden", title: "Rhododendron Blossoms", description: "Spring colors in the Yumthang Valley" }
 ];
 
 export const galleryCategories = [

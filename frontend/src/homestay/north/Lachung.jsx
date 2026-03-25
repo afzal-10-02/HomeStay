@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import BookingForm from "../../components/BookingForm";
+import HomestayCard from "../../components/HomestayCard";
 import "../../index.css";
+
 
 const Lachung = () => {
   const [selectedHomestay, setSelectedHomestay] = useState(null);
@@ -69,16 +71,14 @@ const Lachung = () => {
         <div className="hero-content  px-4">
           <h1>Lachung Homestays</h1>
           <p>Experience the Valley of Flowers from traditional Lachung homestays</p>
-            <Link className="contact-link text-white text-decoration-none fw-medium" to="/">
-      Home
-    </Link>
-    <i className="fas fa-angle-right opacity-75"></i>
-    <Link
-      className="contact-link text-white text-decoration-none fw-medium opacity-75"
-      to="/homestay/east/Lachung"
-    >
- Lachung
-    </Link>
+          <div className="breadcrumb-nav">
+            <Link className="breadcrumb-link" to="/">
+              <i className="fas fa-home"></i> Home
+            </Link>
+            <i className="fas fa-angle-right breadcrumb-separator"></i>
+            <span className="breadcrumb-current">Lachung</span>
+          </div>
+
         </div>
       </section>
 
@@ -99,39 +99,17 @@ const Lachung = () => {
         <div className="container">
           <h2>Available Homestays</h2>
 
-          <div className="homestay-grid">
+          <div className="row g-4 justify-content-center">
             {homestays.map((stay) => (
-              <div key={stay.id} className="homestay-card">
-                <div className="homestay-image">
-                  <img src={stay.image} alt={stay.name} />
-                  <span className="price-badge">{stay.price}</span>
-                  <span className="rating-badge">{stay.rating}</span>
-                </div>
-
-                <div className="homestay-content">
-                  <h3>{stay.name}</h3>
-                  <p className="location">{stay.location}</p>
-                  <p>{stay.description}</p>
-
-                  <ul>
-                    {stay.amenities.map((a, i) => (
-                      <li key={i}>{a}</li>
-                    ))}
-                  </ul>
-
-                  <div className="homestay-footer">
-                    <p>📞 {stay.contact}</p>
-                    <button 
-                      className="book-button" 
-                      onClick={() => setSelectedHomestay(stay)}
-                    >
-                      Book Now
-                    </button>
-                  </div>
-                </div>
+              <div key={stay.id} className="col-12 col-md-6 col-lg-4">
+                <HomestayCard 
+                    stay={stay} 
+                    onBook={(stay) => setSelectedHomestay(stay)} 
+                />
               </div>
             ))}
           </div>
+
 
         </div>
       </section>

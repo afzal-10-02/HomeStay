@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 // Import rooms data
 import { rooms } from "../data/roomsData";
 import RoomCard from "../components/RoomCard";
+import FAQ from "../components/FAQ";
+
 
 
 const About = () => {
@@ -136,10 +138,11 @@ const About = () => {
                     alt="Sikkim landscape"
                     className="img-fluid rounded-5 shadow-lg main-image"
                   />
-                  <div className="position-absolute bottom-0 end-0 mb-4 me-3 custom-badge-gradient float-animation text-white py-2 px-4 rounded-pill fw-bold small d-flex align-items-center z-index-10 shadow-lg">
+                  <div className="position-absolute bottom-0 end-0 mb-4 me-3 float-animation text-white py-2 px-4 rounded-pill fw-bold small d-flex align-items-center z-index-10 shadow-lg" style={{ backgroundColor: '#1a4d42' }}>
   <i className="fas fa-award me-2"></i>
   <span>Best Homestay 2024</span>
 </div>
+
                 </div>
               </div>
             </div>
@@ -523,6 +526,10 @@ const About = () => {
     </div>
   </div>
 </motion.div>
+      {/* FAQ Section */}
+      <motion.div variants={itemVariants} className="mt-5 pb-5">
+        <FAQ />
+      </motion.div>
       </div>
     </motion.section>
   );
